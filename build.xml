@@ -4,16 +4,18 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
-    
+
     <!--  Init -->
     <target name="init">
         <mkdir dir="${build}"/>
+        <mkdir dir="${build}/test-results" />
     </target>
-    
+
     <!-- Compile -->
     <target name="compile" depends="init" description="Compile">
         <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
-            <classpath id="classpath" >
+            <classpath location="${lib}/junit-4.10.jar" />
+            <classpath id="classpath">
                 <pathelement path="${lib}"/>
                 <fileset dir="${lib}">
                     <include name="*.jar"/>
@@ -21,19 +23,37 @@
             </classpath>
         </javac>
     </target>
-    
+
     <!-- Distribution -->
-    <target name="dist" depends="compile" description="Dist generation" >
+    <target name="dist" depends="compile" description="Dist generation">
         <mkdir dir="${dist}/lib"/>
-        <jar jarfile="${dist}/lib/kayako-SDK.jar" basedir="${build}" >
+        <jar jarfile="${dist}/lib/kayako-SDK.jar" basedir="${build}">
             <zipgroupfileset dir="${lib}" includes="*.jar"/>
         </jar>
     </target>
-    
+
+
     <!--  Clean -->
     <target name="clean" description="Clean">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
     </target>
-    
+
+        
+    <!-- Tests -->
+    <target name="test" depends="compile">
+        <junit>
+            <classpath>
+                <pathelement location="${build}" />
+                <pathelement location="${lib}/junit-4.10.jar"/>
+            </classpath>
+            <batchtest todir="${build}/test-results">
+                <fileset dir="${build}">
+                    <include name="**/DummyTest.class" />
+                </fileset>
+            </batchtest>
+            <formatter type="xml" usefile="true"/>
+        </junit>
+    </target>
+
 </project>
