@@ -46,6 +46,7 @@ pipeline {
                     files = findFiles(glob: "**/*.exec")
                     if (files) {
                         jacoco (
+                            classPattern: '**/build/com',
                             exclusionPattern: '**/*Test*.class',
                             buildOverBuild: true,
                             deltaClassCoverage: "${env.DELTA_CLASS_COVERAGE}",
