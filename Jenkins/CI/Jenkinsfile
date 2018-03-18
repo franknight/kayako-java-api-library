@@ -7,9 +7,6 @@ pipeline {
             label "${env.NODE_LABELS}"
         }
     }
-    environment {
-        // GRADLE_HOME = tool name: 'Gradle-Kayako', type: 'gradle'
-    }
     options {
         timestamps()
     }
