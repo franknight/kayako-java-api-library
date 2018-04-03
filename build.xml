@@ -28,11 +28,14 @@
         <jar jarfile="${dist}/lib/kayako-SDK.jar" basedir="${build}">
             <zipgroupfileset dir="${lib}" includes="*.jar"/>
         </jar>
+    	<antcall target="report"/>
     </target>
     <!--  Clean -->
     <target name="clean" description="Clean">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
+    	<delete dir="${testoutput}"/>
+    	<delete dir="${report}"/>
     </target>
 
     <!-- Tests -->
