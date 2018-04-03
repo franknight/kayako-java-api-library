@@ -4,15 +4,20 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
+	<property name="testdir" location="test"/>
+	<property name="testoutput" location="build-test"/>
+	<property name="report" location="report"/>
     
     <!--  Init -->
     <target name="init">
         <mkdir dir="${build}"/>
+    	<mkdir dir="${testoutput}"/>
+    	<mkdir dir="${report}"/>
     </target>
     
     <!-- Compile -->
     <target name="compile" depends="init" description="Compile">
-        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false" debug="true">
             <classpath id="classpath" >
                 <pathelement path="${lib}"/>
                 <fileset dir="${lib}">
@@ -28,12 +33,75 @@
         <jar jarfile="${dist}/lib/kayako-SDK.jar" basedir="${build}" >
             <zipgroupfileset dir="${lib}" includes="*.jar"/>
         </jar>
+    	<antcall target="report"/>
     </target>
     
     <!--  Clean -->
     <target name="clean" description="Clean">
         <delete dir="${build}"/>
         <delete dir="${dist}"/>
+    	<delete dir="${testoutput}"/>
+    	<delete dir="${report}"/>
     </target>
-    
+	
+	<path id="test.classpath">
+		<pathelement location="${build}"/>
+		<pathelement location="${testoutput}"/>
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+			<exclude name="openpojo-0.8.4"/>
+			<exclude name="tests-commons-1.6.4"/>
+		</fileset>
+	</path>
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+	    <classpath path="${lib}/org.jacoco.ant-0.8.1.jar"/>
+	    <classpath path="${lib}/org.jacoco.report-0.8.1.jar"/>
+		<classpath path="${lib}/org.jacoco.core-0.8.1.jar"/>
+		<classpath path="${lib}/org.jacoco.agent-0.8.1.jar"/>
+		<classpath path="${lib}/asm-6.0.jar"/>
+		<classpath path="${lib}/asm-analysis-6.0.jar"/>
+		<classpath path="${lib}/asm-commons-6.0.jar"/>
+		<classpath path="${lib}/asm-tree-6.0.jar"/>
+		<classpath path="${lib}/asm-util-6.0.jar"/>
+	</taskdef>
+	<target name="compileTest" depends="compile" description="compile jUnit Test cases">
+	    <javac srcdir="${testdir}" destdir="${testoutput}" includeantruntime="true" nowarn="yes" debug="true" >
+	    	<classpath id="classpath" >
+	    	     <pathelement path="${build}"/>
+	                <fileset dir="${lib}">
+	                    <include name="*.jar"/>
+	                </fileset>
+           </classpath>
+	    </javac>
+	</target>
+	
+	<target name="runTest" depends="compileTest">
+	  <jacoco:coverage destfile="${testoutput}/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant" exclclassloader="sun.reflect.DelegatingClassLoader:javassist.Loader" >
+		<junit printsummary="on" haltonfailure="yes" fork="true">
+			<classpath>
+				<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${testdir}" includes="**/*Test.java" />
+			</batchtest>
+		</junit>
+	  	</jacoco:coverage>
+	</target>
+	<target name="report" depends="runTest">
+	  	 <jacoco:report xmlns:jacoco="antlib:org.jacoco.ant">
+	        <executiondata>
+	            <file file="${testoutput}/jacoco.exec" />
+	        </executiondata>
+	        <structure name="Jacoco">
+	            <classfiles>
+	                <fileset dir="${build}" />
+	            </classfiles>
+	            <sourcefiles encoding="UTF-8">
+	                <fileset dir="${src}" />
+	            </sourcefiles>
+	        </structure>
+	        <html destdir="${report}" />
+	  	</jacoco:report>
+	</target>
 </project>
