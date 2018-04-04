@@ -62,7 +62,7 @@
                 </classpath>
                 <batchtest todir="${build}/test-results" fork="true">
                     <fileset dir="${build}">
-                        <include name="**/DummyTest.class" />
+                        <include name="**/*Test*.class" />
                     </fileset>
                 </batchtest>
                 <formatter type="xml" usefile="true"/>
