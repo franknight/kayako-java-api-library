@@ -4,6 +4,7 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
+    <property name="test" location-"test"/>
 
     <!--  Init -->
     <target name="init">
@@ -61,8 +62,8 @@
                     <pathelement location="${lib}/junit-4.10.jar"/>
                 </classpath>
                 <batchtest todir="${build}/test-results" fork="true">
-                    <fileset dir="${build}">
-                        <include name="**/*Test*.class" />
+                    <fileset dir="${test}">
+                        <include name="**/*Test.class" />
                     </fileset>
                 </batchtest>
                 <formatter type="xml" usefile="true"/>
