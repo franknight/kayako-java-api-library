@@ -4,7 +4,7 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="lib"/>
-    <property name="test" location-"test"/>
+    <property name="test" location="test"/>
 
     <!--  Init -->
     <target name="init">
