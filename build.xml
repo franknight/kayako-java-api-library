@@ -22,6 +22,15 @@
                 </fileset>
             </classpath>
         </javac>
+        <javac srcdir="${test}" destdir="${build}" includeantruntime="false">
+            <classpath location="${lib}/junit-4.10.jar" />
+            <classpath id="classpath">
+                <pathelement path="${lib}"/>
+                <fileset dir="${lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
     </target>
     <!-- Distribution -->
     <target name="dist" depends="compile" description="Dist generation">
@@ -62,7 +71,7 @@
                     <pathelement location="${lib}/junit-4.10.jar"/>
                 </classpath>
                 <batchtest todir="${build}/test-results" fork="true">
-                    <fileset dir="${test}">
+                    <fileset dir="${build}">
                         <include name="**/*Test.class" />
                     </fileset>
                 </batchtest>
