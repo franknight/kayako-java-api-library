@@ -93,6 +93,16 @@ public class UserGroup extends BaseGroup {
     protected Boolean master;
 
     /**
+     * Sets read only.
+     *
+     * @param readOnly
+     */
+    public UserGroup setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
+    }
+    
+    /**
      * Gets object xml name.
      *
      * @return the object xml name
@@ -129,7 +139,7 @@ public class UserGroup extends BaseGroup {
     public static void setController(String controller) {
         UserGroup.controller = controller;
     }
-
+    
     /**
      * Gets type.
      *

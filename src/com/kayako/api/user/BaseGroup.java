@@ -66,16 +66,4 @@ public abstract class BaseGroup extends KEntity {
 
         return readOnly;
     }
-
-    /**
-     * Sets read only.
-     *
-     * @param readOnly
-     */
-    public BaseGroup setReadOnly(Boolean readOnly) {
-        this.readOnly = readOnly;
-        return this;
-    }
-
-
 }

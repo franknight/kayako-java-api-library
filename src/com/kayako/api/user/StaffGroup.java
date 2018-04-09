@@ -85,6 +85,16 @@ public class StaffGroup extends BaseGroup {
     protected Boolean admin;
 
     /**
+     * Sets read only.
+     *
+     * @param readOnly
+     */
+    public StaffGroup setReadOnly(Boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
+    }
+
+    /**
      * Gets object xml name.
      *
      * @return the object xml name
