@@ -24,7 +24,9 @@ import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.user.StaffGroup;
 import com.kayako.api.util.Helper;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Ticket status.
@@ -34,11 +36,11 @@ public class TicketStatus extends TicketAbstract {
   /**
    * The Controller.
    */
-  static protected String controller = "/Tickets/TicketStatus";
+  protected static String controller = "/Tickets/TicketStatus";
   /**
    * The Object xml name.
    */
-  static protected String objectXmlName = "ticketstatus";
+  protected static String objectXmlName = "ticketstatus";
 
   /**
    * Status of this ticket Status.
@@ -55,7 +57,7 @@ public class TicketStatus extends TicketAbstract {
    * @apiField
    * @var bool
    */
-  protected Boolean staffVisibilityCustom;
+  protected boolean staffVisibilityCustom;
 
   /**
    * Identifiers of staff groups which can change ticket status to this status.
@@ -63,20 +65,20 @@ public class TicketStatus extends TicketAbstract {
    * @apiField name = staffgroupid
    * @var int[]
    */
-  protected ArrayList<Integer> staffGroupIds = new ArrayList<Integer>();
+  protected List<Integer> staffGroupIds = new ArrayList<Integer>();
   /**
    * Linked department.
    *
    * @var Department
    */
-  private Department department = null;
+  private Department department;
 
   /**
    * Staff groups which can change ticket status to this status.
    *
    * @var StaffGroup[]
    */
-  private HashMap<Integer, StaffGroup> staffGroups = new HashMap<Integer, StaffGroup>();
+  private Map<Integer, StaffGroup> staffGroups = new HashMap<Integer, StaffGroup>();
   /**
    * Background color associated with this ticket status in GUI.
    * <p/>
@@ -104,7 +106,7 @@ public class TicketStatus extends TicketAbstract {
    * @apiField
    * @var bool
    */
-  protected Boolean resetDueTime;
+  protected boolean resetDueTime;
 
   /**
    * If enabled, whenever a ticket is changed to this ticket status a survey email will be dispatched to the user asking
@@ -113,7 +115,7 @@ public class TicketStatus extends TicketAbstract {
    * @apiField
    * @var bool
    */
-  protected Boolean triggerSurvey;
+  protected boolean triggerSurvey;
 
   /**
    * If ticket count for this status is displayed in the filter ticket tree.
@@ -122,7 +124,7 @@ public class TicketStatus extends TicketAbstract {
    * @var bool
    */
 
-  protected Boolean displayCount;
+  protected boolean displayCount;
 
   /**
    * If tickets with this status are marked as resolved/closed.
@@ -130,7 +132,7 @@ public class TicketStatus extends TicketAbstract {
    * @apiField
    * @var bool
    */
-  protected Boolean markAsResolved;
+  protected boolean markAsResolved;
 
   /**
    * If tickets status is to be displayed in main list or not .
@@ -139,7 +141,7 @@ public class TicketStatus extends TicketAbstract {
    * @var bool
    */
 
-  protected Boolean displayInMainList;
+  protected boolean displayInMainList;
 
   /**
    * Gets department.
@@ -164,7 +166,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the boolean
    */
-  public Boolean isStaffVisibilityCustom() {
+  public boolean isStaffVisibilityCustom() {
 
     return staffVisibilityCustom;
   }
@@ -174,7 +176,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @param staffVisibilityCustom the staff visibility custom
    */
-  public void setStaffVisibilityCustom(Boolean staffVisibilityCustom) {
+  public void setStaffVisibilityCustom(boolean staffVisibilityCustom) {
     this.staffVisibilityCustom = staffVisibilityCustom;
   }
 
@@ -197,7 +199,7 @@ public class TicketStatus extends TicketAbstract {
     this.Status = Status;
   }
 
-  public TicketStatus setReadOnly(Boolean readOnly) {
+  public TicketStatus setReadOnly(boolean readOnly) {
     this.readOnly = readOnly;
     return this;
   }
@@ -264,7 +266,7 @@ public class TicketStatus extends TicketAbstract {
    * @return the staff groups
    * @throws com.kayako.api.exception.KayakoException the kayako exception
    */
-  public HashMap<Integer, StaffGroup> getStaffGroups() throws KayakoException {
+  public Map<Integer, StaffGroup> getStaffGroups() throws KayakoException {
     return getStaffGroups(false);
   }
 
@@ -275,8 +277,8 @@ public class TicketStatus extends TicketAbstract {
    * @return the staff groups
    * @throws KayakoException the kayako exception
    */
-  public HashMap<Integer, StaffGroup> getStaffGroups(Boolean refresh) throws KayakoException {
-    for (int staffGroupId : this.getStaffGroupIds()) {
+  public Map<Integer, StaffGroup> getStaffGroups(boolean refresh) throws KayakoException {
+    for (int staffGroupId : getStaffGroupIds()) {
       if (!staffGroups.containsKey(staffGroupId) || refresh) {
         staffGroups.put(staffGroupId, StaffGroup.get(staffGroupId));
       }
@@ -316,7 +318,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the reset due time
    */
-  public Boolean getResetDueTime() {
+  public boolean getResetDueTime() {
     return resetDueTime;
   }
 
@@ -325,7 +327,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @param resetDueTime the reset due time
    */
-  public void setResetDueTime(Boolean resetDueTime) {
+  public void setResetDueTime(boolean resetDueTime) {
     this.resetDueTime = resetDueTime;
   }
 
@@ -334,7 +336,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the display count
    */
-  public Boolean getDisplayCount() {
+  public boolean getDisplayCount() {
     return displayCount;
   }
 
@@ -343,7 +345,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @param displayCount the display count
    */
-  public void setDisplayCount(Boolean displayCount) {
+  public void setDisplayCount(boolean displayCount) {
     this.displayCount = displayCount;
   }
 
@@ -352,7 +354,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the mark as resolved
    */
-  public Boolean getMarkAsResolved() {
+  public boolean getMarkAsResolved() {
     return markAsResolved;
   }
 
@@ -380,7 +382,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the trigger survey
    */
-  public Boolean getTriggerSurvey() {
+  public boolean getTriggerSurvey() {
     return triggerSurvey;
   }
 
@@ -389,7 +391,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @param triggerSurvey the trigger survey
    */
-  public void setTriggerSurvey(Boolean triggerSurvey) {
+  public void setTriggerSurvey(boolean triggerSurvey) {
     this.triggerSurvey = triggerSurvey;
   }
 
@@ -398,7 +400,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @param markAsResolved the mark as resolved
    */
-  public void setMarkAsResolved(Boolean markAsResolved) {
+  public void setMarkAsResolved(boolean markAsResolved) {
     this.markAsResolved = markAsResolved;
   }
 
@@ -407,7 +409,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the staff group ids
    */
-  public ArrayList<Integer> getStaffGroupIds() {
+  public List<Integer> getStaffGroupIds() {
     return staffGroupIds;
   }
 
@@ -425,7 +427,7 @@ public class TicketStatus extends TicketAbstract {
    *
    * @return the display in main list
    */
-  public Boolean getDisplayInMainList() {
+  public boolean getDisplayInMainList() {
     return displayInMainList;
   }
 
@@ -435,7 +437,7 @@ public class TicketStatus extends TicketAbstract {
    * @param displayInMainList the display in main list
    * @return the display in main list
    */
-  public TicketStatus setDisplayInMainList(Boolean displayInMainList) {
+  public TicketStatus setDisplayInMainList(boolean displayInMainList) {
     this.displayInMainList = displayInMainList;
     return this;
   }
@@ -446,7 +448,7 @@ public class TicketStatus extends TicketAbstract {
    * @param staffGroupId the staff group id
    * @return the boolean
    */
-  public Boolean isVisibleToStaffGroup(int staffGroupId) {
+  public boolean isVisibleToStaffGroup(int staffGroupId) {
     if (!isStaffVisibilityCustom()) {
       return true;
     }
@@ -459,7 +461,7 @@ public class TicketStatus extends TicketAbstract {
    * @param staffGroup the staff group
    * @return the boolean
    */
-  public Boolean isVisibleToStaffGroup(StaffGroup staffGroup) {
+  public boolean isVisibleToStaffGroup(StaffGroup staffGroup) {
     return this.isVisibleToStaffGroup(staffGroup.getId());
   }
 
@@ -469,7 +471,7 @@ public class TicketStatus extends TicketAbstract {
    * @param departmentId the department id
    * @return the boolean
    */
-  public Boolean isAvailableInDepartment(int departmentId) {
+  public boolean isAvailableInDepartment(int departmentId) {
     if (this.departmentId == 0) {
       return true;
     }
@@ -482,7 +484,7 @@ public class TicketStatus extends TicketAbstract {
    * @param department the department
    * @return the boolean
    */
-  public Boolean isAvailableInDepartment(Department department) {
+  public boolean isAvailableInDepartment(Department department) {
     return this.isAvailableInDepartment(department.getId());
   }
 
@@ -515,7 +517,7 @@ public class TicketStatus extends TicketAbstract {
       throw new KayakoException();
     }
 
-    ArrayList<RawArrayElement> components = element.getComponents();
+    List<RawArrayElement> components = element.getComponents();
     for (RawArrayElement component : components) {
       String elementName = component.getElementName();
       if (!component.isComposite() && component.getContent() == null) {

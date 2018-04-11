@@ -24,7 +24,9 @@ import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.user.UserGroup;
 import com.kayako.api.util.Helper;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Ticket type.
@@ -34,11 +36,11 @@ public class TicketType extends TicketAbstract {
   /**
    * The Controller.
    */
-  static protected String controller = "/Tickets/TicketType";
+  protected static String controller = "/Tickets/TicketType";
   /**
    * The Object xml name.
    */
-  static protected String objectXmlName = "tickettype";
+  protected static String objectXmlName = "tickettype";
 
   /**
    * Linked department identifier.
@@ -58,7 +60,7 @@ public class TicketType extends TicketAbstract {
    * @apiField
    * @var bool
    */
-  protected Boolean userVisibilityCustom;
+  protected boolean userVisibilityCustom;
 
   /**
    * Identifier of user group this ticket type is visible to.
@@ -66,7 +68,7 @@ public class TicketType extends TicketAbstract {
    * @apiField name =usergroupid
    * @var int[]
    */
-  protected ArrayList<Integer> userGroupIds = new ArrayList<Integer>();
+  protected List<Integer> userGroupIds = new ArrayList<Integer>();
 
   /**
    * Linked department.
@@ -100,7 +102,7 @@ public class TicketType extends TicketAbstract {
    *
    * @return the boolean
    */
-  public Boolean isUserVisibilityCustom() {
+  public boolean isUserVisibilityCustom() {
 
     return userVisibilityCustom;
   }
@@ -110,7 +112,7 @@ public class TicketType extends TicketAbstract {
    *
    * @param userVisibilityCustom the user visibility custom
    */
-  public void setUserVisibilityCustom(Boolean userVisibilityCustom) {
+  public void setUserVisibilityCustom(boolean userVisibilityCustom) {
     this.userVisibilityCustom = userVisibilityCustom;
   }
 
@@ -133,7 +135,7 @@ public class TicketType extends TicketAbstract {
     this.type = type;
   }
 
-  public TicketType setReadOnly(Boolean readOnly) {
+  public TicketType setReadOnly(boolean readOnly) {
     this.readOnly = readOnly;
     return this;
   }
@@ -181,7 +183,7 @@ public class TicketType extends TicketAbstract {
    *
    * @return the user group ids
    */
-  public ArrayList<Integer> getUserGroupIds() {
+  public List<Integer> getUserGroupIds() {
     return userGroupIds;
   }
 
@@ -190,7 +192,7 @@ public class TicketType extends TicketAbstract {
    *
    * @param userGroupIds the user group ids
    */
-  public void setUserGroupIds(ArrayList<Integer> userGroupIds) {
+  public void setUserGroupIds(List<Integer> userGroupIds) {
     this.userGroupIds = userGroupIds;
   }
 
@@ -200,7 +202,7 @@ public class TicketType extends TicketAbstract {
    * @return the user groups
    * @throws com.kayako.api.exception.KayakoException the kayako exception
    */
-  public HashMap<Integer, UserGroup> getUserGroups() throws KayakoException {
+  public Map<Integer, UserGroup> getUserGroups() throws KayakoException {
     return getUserGroups(false);
   }
 
@@ -211,7 +213,7 @@ public class TicketType extends TicketAbstract {
    * @return the user groups
    * @throws KayakoException the kayako exception
    */
-  public HashMap<Integer, UserGroup> getUserGroups(Boolean refresh) throws KayakoException {
+  public Map<Integer, UserGroup> getUserGroups(boolean refresh) throws KayakoException {
     for (int userGroupId : this.getUserGroupIds()) {
       if (!userGroups.containsKey(userGroupId) || refresh) {
         userGroups.put(userGroupId, UserGroup.get(userGroupId));
@@ -237,7 +239,7 @@ public class TicketType extends TicketAbstract {
    * @param userGroupId the user group id
    * @return the boolean
    */
-  public Boolean isVisibleToUserGroup(int userGroupId) {
+  public boolean isVisibleToUserGroup(int userGroupId) {
     if (!isUserVisibilityCustom()) {
       return true;
     }
@@ -250,7 +252,7 @@ public class TicketType extends TicketAbstract {
    * @param userGroup the user group
    * @return the boolean
    */
-  public Boolean isVisibleToUserGroup(UserGroup userGroup) {
+  public boolean isVisibleToUserGroup(UserGroup userGroup) {
     return this.isVisibleToUserGroup(userGroup.getId());
   }
 
@@ -260,7 +262,7 @@ public class TicketType extends TicketAbstract {
    * @param departmentId the department id
    * @return the boolean
    */
-  public Boolean isAvailableInDepartment(int departmentId) {
+  public boolean isAvailableInDepartment(int departmentId) {
     if (this.departmentId == 0) {
       return true;
     }
@@ -273,7 +275,7 @@ public class TicketType extends TicketAbstract {
    * @param department the department
    * @return the boolean
    */
-  public Boolean isAvailableInDepartment(Department department) {
+  public boolean isAvailableInDepartment(Department department) {
     return this.isAvailableInDepartment(department.getId());
   }
 
@@ -306,7 +308,7 @@ public class TicketType extends TicketAbstract {
       throw new KayakoException();
     }
 
-    ArrayList<RawArrayElement> components = element.getComponents();
+    List<RawArrayElement> components = element.getComponents();
     for (RawArrayElement component : components) {
       String elementName = component.getElementName();
       if (!component.isComposite() && component.getContent() == null) {
