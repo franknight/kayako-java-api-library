@@ -50,7 +50,7 @@ abstract class TicketAbstract extends KEntity {
   /**
    * The Read only.
    */
-  protected Boolean readOnly = true;
+  protected boolean readOnly = true;
 
   /**
    * Gets display icon.
