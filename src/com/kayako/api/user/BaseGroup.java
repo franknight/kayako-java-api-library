@@ -20,7 +20,7 @@ public abstract class BaseGroup extends KEntity {
     protected String title;
     
     /**
-     * Gets title.
+     * Gets Group title.
      *
      * @return the title
      */
