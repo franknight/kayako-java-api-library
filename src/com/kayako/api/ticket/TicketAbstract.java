@@ -15,7 +15,7 @@ abstract class TicketAbstract extends KEntity {
 
   /**
    * Linked department identifier.
-   * <p/>
+   * 
    * If a ticket Status is linked to a department, it will be visible only under the linked department.
    *
    * @apiField
