@@ -43,6 +43,7 @@ public class RawArrayElementTest {
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(TEST_KEY_NAME, TEST_VALUE_NAME);
 
+        // Act
         rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, attributes);
 
         // Assert
@@ -190,13 +191,13 @@ public class RawArrayElementTest {
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(TEST_KEY_NAME, TEST_VALUE_NAME);
 
+        // Act
         rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, attributes);
 
         // Assert
         assertEquals("<Element key = 'value' >\n"
                 + "null\n"
                 + "</Element>\n", rawArrayElement.toString());
-
     }
 
     @Test
