@@ -67,7 +67,7 @@ public class RawArrayElementTest {
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(TEST_KEY_NAME, TEST_VALUE_NAME);
 
-        rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, attributes, "cont");
+        rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, attributes, TEST_EMPTY_CONTENT_NAME);
 
         // Act
         rawArrayElement.put(TEST_CONTENT_NAME);
@@ -80,7 +80,7 @@ public class RawArrayElementTest {
 
     @Test(expected = IllegalAccessException.class)
     public void shouldSetComponents() throws Exception {
-        rawArrayElement = new RawArrayElement("elementname", TEST_CONTENT_NAME);
+        rawArrayElement = new RawArrayElement(TEST_AUTO_ELEMENT_NAME, TEST_CONTENT_NAME);
 
         rawArrayElement.setElementName(TEST_ELEMENT_NAME);
         rawArrayElement.setContent(null);
