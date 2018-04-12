@@ -30,7 +30,7 @@ public abstract class BaseGroup extends KEntity {
     }
 
     /**
-     * Sets title.
+     * Sets Group title.
      *
      * @param title the title
      */
