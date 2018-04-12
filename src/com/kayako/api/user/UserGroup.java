@@ -26,7 +26,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 import com.kayako.api.exception.KayakoException;
-import com.kayako.api.rest.KEntity;
 import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.util.Helper;
 
@@ -36,7 +35,7 @@ import java.util.HashMap;
 /**
  * The type User group.
  */
-public class UserGroup extends KEntity {
+public class UserGroup extends BaseGroup {
 
     public final static String TYPE_REGISTERED = "registered";
     public final static String TYPE_GUEST = "guest";
@@ -77,22 +76,6 @@ public class UserGroup extends KEntity {
     }
 
     /**
-     * User Group identifier.
-     *
-     * @apiField
-     * @var int
-     */
-    protected int id;
-
-    /**
-     * User Group title.
-     *
-     * @apiField
-     * @var string
-     */
-    protected String title;
-
-    /**
      * Type of user Group.
      *
      * @apiField
@@ -110,48 +93,15 @@ public class UserGroup extends KEntity {
     protected Boolean master;
 
     /**
-     * Gets title.
+     * Sets read only.
      *
-     * @return the title
+     * @param readOnly
      */
-    public String getTitle() {
-
-        return title;
-    }
-
-    /**
-     * Sets title.
-     *
-     * @param title the title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Boolean getReadOnly() {
-
-        return readOnly;
-    }
-
     public UserGroup setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
         return this;
     }
-
+    
     /**
      * Gets object xml name.
      *
@@ -189,7 +139,7 @@ public class UserGroup extends KEntity {
     public static void setController(String controller) {
         UserGroup.controller = controller;
     }
-
+    
     /**
      * Gets type.
      *

@@ -26,7 +26,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 import com.kayako.api.exception.KayakoException;
-import com.kayako.api.rest.KEntity;
 import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.util.Helper;
 
@@ -36,7 +35,7 @@ import java.util.HashMap;
 /**
  * The type Staff group.
  */
-public class StaffGroup extends KEntity {
+public class StaffGroup extends BaseGroup {
 
     /**
      * The Controller.
@@ -78,22 +77,6 @@ public class StaffGroup extends KEntity {
     }
 
     /**
-     * Staff Group identifier.
-     *
-     * @apiField
-     * @var int
-     */
-    protected int id;
-
-    /**
-     * Staff Group title.
-     *
-     * @apiField
-     * @var string
-     */
-    protected String title;
-
-    /**
      * Whether this staff group is admin group (built-in).
      *
      * @apiField
@@ -102,43 +85,10 @@ public class StaffGroup extends KEntity {
     protected Boolean admin;
 
     /**
-     * Gets title.
+     * Sets read only.
      *
-     * @return the title
+     * @param readOnly
      */
-    public String getTitle() {
-
-        return title;
-    }
-
-    /**
-     * Sets title.
-     *
-     * @param title the title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    /**
-     * Sets id.
-     *
-     * @param id the id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Boolean getReadOnly() {
-
-        return readOnly;
-    }
-
     public StaffGroup setReadOnly(Boolean readOnly) {
         this.readOnly = readOnly;
         return this;
