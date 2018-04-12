@@ -6,7 +6,7 @@ import com.kayako.api.rest.KEntity;
 abstract class TicketAbstract extends KEntity {
 
   /**
-   * Path to icon displayed in GUI for this ticket.
+   * Path to icon to display in GUI for this ticket.
    *
    * @apiField
    * @var string
