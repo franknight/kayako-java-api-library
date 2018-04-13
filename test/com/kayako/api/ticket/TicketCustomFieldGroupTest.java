@@ -30,20 +30,17 @@ public class TicketCustomFieldGroupTest {
     }
 
     @Test
-    public void shouldCreatedConstructorWithTicketIdAndElement() throws KayakoException {
+    public void shouldCreatedConstructorWithTicketIdAndElement() throws Exception {
         // Arrange
         ticketCustomFieldGroup = new TicketCustomFieldGroup(1, new RawArrayElement(TEST_ELEMENT_NAME));
 
-        //Assert
+        // Assert
         collector.checkThat(ticketCustomFieldGroup.getTicketId(), equalTo(1));
         collector.checkThat(ticketCustomFieldGroup.getType(), equalTo(CustomFieldGroupTypeEnum.TICKET));
     }
 
     @Test
     public void shouldGetController() {
-        // Arrange
-        ticketCustomFieldGroup = new TicketCustomFieldGroup(1);
-
         // Assert
         assertEquals(TicketCustomFieldGroup.controller, TicketCustomFieldGroup.getController());
     }
