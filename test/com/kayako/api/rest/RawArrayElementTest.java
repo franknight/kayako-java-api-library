@@ -24,6 +24,14 @@ public class RawArrayElementTest {
     private static final String TEST_EMPTY_CONTENT_NAME = "Empty content";
     private static final String TEST_KEY_NAME = "key";
     private static final String TEST_VALUE_NAME = "value";
+    private static final String ELEMENT_NULL_VALUE_TAG = "<Element key = 'value' >\n"
+                                                        + "null\n"
+                                                        + "</Element>\n";
+    private static final String ELEMENT_CONTENT_VALUE_TAG = "<Element key = 'value' >\n"
+                                                        + "<Element>\n"
+                                                        + "Content\n"
+                                                        + "</Element>\n"
+                                                        + "</Element>\n";
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -52,13 +60,28 @@ public class RawArrayElementTest {
     }
 
     @Test
-    public void shouldCreatedConstructorWithElementNameAndContent() {
+    public void shouldCreatedConstructorWithElementName() {
         // Arrange
         rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, TEST_CONTENT_NAME);
 
+        // Act
+        String elementName = rawArrayElement.getElementName();
+
         // Assert
-        collector.checkThat(rawArrayElement.getElementName(), equalTo(TEST_ELEMENT_NAME));
-        collector.checkThat(rawArrayElement.getContent(), equalTo(TEST_CONTENT_NAME));
+        assertEquals(elementName, TEST_ELEMENT_NAME);
+    }
+
+    @Test
+    public void shouldCreatedConstructorWithContent() {
+        // Arrange
+        rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, TEST_CONTENT_NAME);
+
+        // Act
+        String content = rawArrayElement.getContent();
+
+
+        // Assert
+        assertEquals(content, TEST_CONTENT_NAME);
     }
 
     @Test
@@ -102,7 +125,7 @@ public class RawArrayElementTest {
         RawArrayElement newRawArrayElement = new RawArrayElement();
         newRawArrayElement.put(rawArrayElement);
 
-        collector.checkThat(rawArrayElement.get(), equalTo(""));
+        rawArrayElement.get();
     }
 
     @Test
@@ -165,11 +188,13 @@ public class RawArrayElementTest {
         rawArrayElement.setComponents(components);
 
         // Assert
-        assertEquals(rawArrayElement, rawArrayElement.filterByComponentValue(TEST_ELEMENT_NAME, TEST_EMPTY_CONTENT_NAME, true));
+        assertEquals(rawArrayElement, rawArrayElement.filterByComponentValue(TEST_ELEMENT_NAME,
+                                                                             TEST_EMPTY_CONTENT_NAME,
+                                                                    true));
     }
 
     @Test
-    public void shouldFilterByComponentAttribute() throws KayakoException {
+    public void shouldFilterByComponentAttribute() throws Exception {
         // Arrange
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(TEST_KEY_NAME, TEST_VALUE_NAME);
@@ -195,9 +220,7 @@ public class RawArrayElementTest {
         rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME, attributes);
 
         // Assert
-        assertEquals("<Element key = 'value' >\n"
-                + "null\n"
-                + "</Element>\n", rawArrayElement.toString());
+        assertEquals(ELEMENT_NULL_VALUE_TAG, rawArrayElement.toString());
     }
 
     @Test
@@ -215,11 +238,7 @@ public class RawArrayElementTest {
         rawArrayElement.setComposite(true);
 
         // Assert
-        assertEquals("<Element key = 'value' >\n"
-                + "<Element>\n"
-                + "Content\n"
-                + "</Element>\n"
-                + "</Element>\n", rawArrayElement.toString());
+        assertEquals(ELEMENT_CONTENT_VALUE_TAG, rawArrayElement.toString());
     }
 
 }
