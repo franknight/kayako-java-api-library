@@ -2,6 +2,7 @@ package com.kayako.api.ticket;
 
 import com.kayako.api.enums.TicketCreatorEnum;
 import com.kayako.api.enums.TicketPostCreatorEnum;
+import com.kayako.api.exception.KayakoException;
 import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.user.Staff;
 import com.kayako.api.user.User;
@@ -349,6 +350,12 @@ public class TicketPostTest {
     public void shouldCheckToString() {
         // Assert
         assertEquals(TEST_TICKET_POST_OBJECT, ticketPost.toString());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void shouldGetWhenTicketIdAndId() throws KayakoException {
+        // Act
+        assertEquals("", TicketPost.get(1,1));
     }
 
     @Test
