@@ -5,17 +5,18 @@ import com.kayako.api.enums.AppEnum;
 import com.kayako.api.exception.KayakoException;
 import com.kayako.api.user.UserGroup;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DepartmentTest {
 
@@ -26,6 +27,9 @@ public class DepartmentTest {
     private static final String TEST_ICON_NAME = "Icon A";
     private static final String TEST_XML_NAME = "Xml A";
     private static final String TEST_CONTROLLER_NAME = "Controller A";
+
+    @Rule
+    public ErrorCollector collector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -48,13 +52,13 @@ public class DepartmentTest {
     @Test
     public void shouldSetTitle() {
         // Assert
-        assertEquals(TEST_DEPARTMENT_NAME, department.getTitle());
-        assertEquals(AccessTypeEnum.PUBLIC, department.getType());
-        assertEquals(AppEnum.TICKETS, department.getApp());
+        collector.checkThat(TEST_DEPARTMENT_NAME, equalTo(department.getTitle()));
+        collector.checkThat(AccessTypeEnum.PUBLIC, equalTo(department.getType()));
+        collector.checkThat(AppEnum.TICKETS, equalTo(department.getApp()));
     }
 
     @Test
-    public void shouldSetParentDepartment() throws KayakoException {
+    public void shouldSetParentDepartment() throws Exception {
         // Arrange
         parentDepartment = new Department();
         department = new Department(TEST_DEPARTMENT_NAME);
@@ -78,7 +82,7 @@ public class DepartmentTest {
         department.setParentDepartment(parentDepartment);
 
         // Assert
-        assertEquals(null, department.getParentDepartment(true));
+        assertNull(department.getParentDepartment(true));
     }
 
     @Test
@@ -132,7 +136,7 @@ public class DepartmentTest {
     public void shouldSetUserGroups() throws KayakoException {
         // Arrange
         UserGroup userGroup = new UserGroup();
-        HashMap<Integer, UserGroup> userGroups = new HashMap<Integer, UserGroup>();
+        Map<Integer, UserGroup> userGroups = new HashMap<Integer, UserGroup>();
         Set<Integer> keySet = userGroups.keySet();
         ArrayList<Integer> userGroupIds = new ArrayList<Integer>();
 
@@ -141,7 +145,7 @@ public class DepartmentTest {
         userGroups.put(1, userGroup);
         userGroupIds.addAll(keySet);
 
-        department.setUserGroups(userGroups);
+        department.setUserGroups((HashMap<Integer, UserGroup>) userGroups);
         department.setUserGroupIds(userGroupIds);
 
         department.addUserGroup(userGroup);
