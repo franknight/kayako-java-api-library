@@ -44,9 +44,8 @@ public class TicketPostTest {
     private static final String TEST_CONTENT_NAME = "contents";
     private static final String TEST_IS_PRIVATE = "isprivate";
 
-
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Before
     public void setUp() {
@@ -353,16 +352,16 @@ public class TicketPostTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldGetWhenTicketIdAndId() throws KayakoException {
+    public void shouldGetWhenTicketIdAndId() throws Exception {
         // Act
         assertEquals("", TicketPost.get(1,1));
     }
 
     @Test
-    public void shouldCheckPopulate() throws Exception{
+    public void shouldCheckPopulate() throws Exception {
         // Arrange
         RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
-        ArrayList<RawArrayElement> components = new ArrayList<RawArrayElement>();
+        ArrayList<RawArrayElement> components = new ArrayList<>();
 
         // Act
         components.add(new RawArrayElement(TEST_ID));
