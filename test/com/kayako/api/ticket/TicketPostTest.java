@@ -21,11 +21,11 @@ import static org.junit.Assert.assertTrue;
 public class TicketPostTest {
 
     private TicketPost ticketPost;
-    private static final String TEST_OBJECT_XML_NAME = "XML";
+    private static final String TEST_OBJECT_XML_NAME = "post";
     private static final String TEST_CONTROLLER_NAME = "Controller";
     private static final String TEST_SUBJECT_NAME = "Subject";
     private static final String TEST_TICKET_POST_OBJECT = "TicketPost- ID: 0";
-    private static final String TEST_ELEMENT_NAME = "XML";
+    private static final String TEST_ELEMENT_NAME = "post";
     private static final String TEST_ID = "id";
     private static final String TEST_TICKET_ID = "ticketid";
     private static final String TEST_DATELINE = "dateline";
@@ -264,6 +264,9 @@ public class TicketPostTest {
 
         // Act
         ticketPost.setCreator(staff);
+
+        // Assert
+        assertEquals(TicketPostCreatorEnum.STAFF, (ticketPost.getCreatorType()));
     }
 
     @Test
@@ -353,7 +356,7 @@ public class TicketPostTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldGetWhenTicketIdAndId() throws Exception {
-        // Act
+        // Assert
         assertEquals("", TicketPost.get(1,1));
     }
 
