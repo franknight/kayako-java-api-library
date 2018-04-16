@@ -4,17 +4,18 @@ import com.kayako.api.department.Department;
 import com.kayako.api.enums.AccessTypeEnum;
 import com.kayako.api.exception.KayakoException;
 import com.kayako.api.rest.RawArrayElement;
-import com.kayako.api.user.Staff;
 import com.kayako.api.user.StaffGroup;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import static org.hamcrest.CoreMatchers.equalTo;
