@@ -8,8 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
-import java.util.ArrayList;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import static org.hamcrest.CoreMatchers.is;
