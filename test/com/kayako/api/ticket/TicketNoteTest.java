@@ -2,7 +2,6 @@ package com.kayako.api.ticket;
 
 import com.kayako.api.enums.ColorEnum;
 import com.kayako.api.enums.TicketNoteTypeEnum;
-import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.user.Staff;
 import com.kayako.api.user.User;
 import com.kayako.api.user.UserOrganization;
@@ -10,8 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-
-import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -263,7 +260,7 @@ public class TicketNoteTest {
         ticketNote = new TicketNote();
 
         // Assert
-        assertEquals(TEST_TICKET_NOTE_OBJECT, ticketNote.toString());
+        assertThat(ticketNote.toString(), is(TEST_TICKET_NOTE_OBJECT));
     }
 
     @Test
