@@ -12,7 +12,7 @@
     
     <!-- Compile -->
     <target name="compile" depends="init" description="Compile">
-        <javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+        <javac srcdir="${src}" destdir="${build}" includeantruntime="false" debug="true">
             <classpath id="classpath" >
                 <pathelement path="${lib}"/>
                 <fileset dir="${lib}">
