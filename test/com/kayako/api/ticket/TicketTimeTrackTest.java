@@ -18,10 +18,10 @@ import static org.junit.Assert.assertTrue;
 public class TicketTimeTrackTest {
 
     private TicketTimeTrack ticketTimeTrack;
-    private static final int TEST_TIME_WORKED_INT = 36000;
-    private static final int TEST_TIME_BILLABLE_INT = 72000;
-    private static final int TEST_BILL_DATE = 18000;
-    private static final int TEST_WORK_DATE = 18000;
+    private static final int TEST_TIME_WORKED_INT = 36_000;
+    private static final int TEST_TIME_BILLABLE_INT = 72_000;
+    private static final int TEST_BILL_DATE = 18_000;
+    private static final int TEST_WORK_DATE = 18_000;
     private static final String TEST_NOTE_COLOR = "notecolor";
     private static final String TEST_TIME_WORKED_STRING = "10:00";
     private static final String TEST_TIME_BILLABLE_STRING = "20:00";
