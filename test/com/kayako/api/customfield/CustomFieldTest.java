@@ -1,14 +1,15 @@
 package com.kayako.api.customfield;
 
+import static java.lang.Boolean.TRUE;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.powermock.api.easymock.PowerMock.replay;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.Before;
 import org.junit.rules.ErrorCollector;
 import java.util.Map;
 import java.util.HashMap;
@@ -21,15 +22,14 @@ public class CustomFieldTest {
     private CustomFieldDefinition customFieldDefinitionMock;
     private RawArrayElement rawArrayElement;
 
-    private static final Boolean TRUE = true;
-    private static final String EMPTY_STRING = "";
-    private static final String INT_STRING = "1";
-    private static final String TITLE_KEY = "title";
+    private static final int INT_ID = 1;
+    private static final String STR_VALUE = "1";
     private static final String NAME_KEY = "name";
-    private static final String TITLE_VALUE = "TITLE";
     private static final String NAME_VALUE = "NAME_VALUE";
+    private static final String TITLE_KEY = "title";
+    private static final String TITLE_VALUE = "TITLE";
     private static final String CONTENT = "CONTENT";
-    private static final int INTEGER = 1;
+    private static final String CONTROLLER = "CONTROLLER";
     private static final CustomFieldOption CUSTOM_FIELD_OPTION = new CustomFieldOption();
     private Map<String, String> attributes;
 
@@ -41,7 +41,7 @@ public class CustomFieldTest {
         customFieldGroupMock = mock(CustomFieldGroup.class);
 
         customFieldDefinitionMock = mock(CustomFieldDefinition.class);
-        expect(customFieldDefinitionMock.getOptionById(INTEGER)).andReturn(CUSTOM_FIELD_OPTION);
+        expect(customFieldDefinitionMock.getOptionById(INT_ID)).andReturn(CUSTOM_FIELD_OPTION);
         customField = new CustomField(customFieldGroupMock);
         customField.setDefinition(customFieldDefinitionMock);
 
@@ -52,40 +52,40 @@ public class CustomFieldTest {
 
     @Test(expected = KayakoException.class)
     public void givenIdWhenGetThenKayakoException() throws KayakoException {
-        customField.get(INTEGER);
+        customField.get(INT_ID);
     }
 
     @Test(expected = KayakoException.class)
     public void givenControllerWhenCreateThenKayakoException() throws KayakoException {
-        customField.create(EMPTY_STRING);
+        customField.create(CONTROLLER);
     }
 
     @Test(expected = KayakoException.class)
     public void givenControllerWhenDeleteThenKayakoException() throws KayakoException {
-        customField.delete(EMPTY_STRING);
+        customField.delete(CONTROLLER);
     }
 
     @Test(expected = KayakoException.class)
     public void givenControllerWhenRefreshThenKayakoException() throws KayakoException {
-        customField.refresh(EMPTY_STRING);
+        customField.refresh(CONTROLLER);
     }
 
     @Test(expected = KayakoException.class)
     public void givenControllerWhenUpdateThenKayakoException() throws KayakoException {
-        customField.update(EMPTY_STRING);
+        customField.update(CONTROLLER);
     }
 
     @Test
     public void givenValueWhenGetOptionThenCustomFieldOption() throws KayakoException {
         replay(customFieldDefinitionMock);
-        collector.checkThat(customField.getOption(INT_STRING), sameInstance(CUSTOM_FIELD_OPTION));
+        collector.checkThat(customField.getOption(STR_VALUE), sameInstance(CUSTOM_FIELD_OPTION));
         verify(customFieldDefinitionMock);
     }
 
     @Test
     public void givenIdWhenGetOptionThenCustomFieldOption() throws KayakoException {
         replay(customFieldDefinitionMock);
-        collector.checkThat(customField.getOption(INTEGER), sameInstance(CUSTOM_FIELD_OPTION));
+        collector.checkThat(customField.getOption(INT_ID), sameInstance(CUSTOM_FIELD_OPTION));
         verify(customFieldDefinitionMock);
     }
 
@@ -118,8 +118,8 @@ public class CustomFieldTest {
 
     @Test
     public void givenIdWhenSetIdThenCustomField(){
-        collector.checkThat(customField.setId(INTEGER), sameInstance(customField));
-        collector.checkThat(customField.getId(), equalTo(INTEGER));
+        collector.checkThat(customField.setId(INT_ID), sameInstance(customField));
+        collector.checkThat(customField.getId(), equalTo(INT_ID));
     }
 
     @Test
