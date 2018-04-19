@@ -435,10 +435,10 @@ public class TicketTest {
     @Test
     public void shouldSetCreationTime() {
         // Act
-        ticket.setCreationTime(TEST_TIME);
+        ticket.setCreationTime(TEST_MS);
 
         // Assert
-        assertEquals(TEST_TIME, ticket.getCreationTime());
+        assertEquals(TEST_MS, ticket.getCreationTime());
     }
 
     @Test
