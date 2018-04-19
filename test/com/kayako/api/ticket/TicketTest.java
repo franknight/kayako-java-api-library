@@ -36,12 +36,20 @@ import static org.powermock.api.easymock.PowerMock.mockStatic;
 import static org.powermock.api.easymock.PowerMock.replay;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({User.class, Staff.class, KEntity.class, TicketStatus.class,
-        TicketPriority.class, TicketType.class, TicketNote.class, UserOrganization.class})
+@PrepareForTest({
+        User.class,
+        Staff.class,
+        KEntity.class,
+        TicketStatus.class,
+        TicketPriority.class,
+        TicketType.class,
+        TicketNote.class,
+        UserOrganization.class
+})
 public class TicketTest {
 
     private Ticket ticket;
-    private static final int TEST_TIME = 36_000;
+    private static final int TEST_MS = 36_000;
     private static final String TEST_ID = "id";
     private static final String TEST_TYPE = "type";
     private static final String TEST_FLAG_TYPE = "flagtype";
