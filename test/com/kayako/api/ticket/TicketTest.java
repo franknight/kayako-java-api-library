@@ -39,7 +39,6 @@ import static org.powermock.api.easymock.PowerMock.replay;
 @PrepareForTest({
         User.class,
         Staff.class,
-        KEntity.class,
         TicketStatus.class,
         TicketPriority.class,
         TicketType.class,
