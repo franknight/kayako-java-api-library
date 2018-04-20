@@ -46,7 +46,7 @@ public class TicketAttachmentTest {
                                         + "</Auto Element>\n";
 
     @Rule
-    public ErrorCollector collector = new ErrorCollector();
+    public final ErrorCollector collector = new ErrorCollector();
 
     @Before
     public void setUp() {
