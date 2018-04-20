@@ -27,23 +27,23 @@ import static org.junit.Assert.assertNull;
 public class TicketAttachmentTest {
 
     private TicketAttachment ticketAttachment;
-    private static final int TEST_FILE_SIZE_INT = 5_000;
-    private static final int TEST_DATE_LINE = 1_000;
-    private static final String TEST_ELEMENT_NAME = "attachment";
-    private static final String TEST_ID = "id";
-    private static final String TEST_TICKET_ID = "ticketid";
-    private static final String TEST_TICKET_POST_ID = "ticketpostid";
-    private static final String TEST_FILE_SIZE= "filesize";
-    private static final String TEST_DATELINE = "dateline";
-    private static final String TEST_CONTENTS = "contents";
-    private static final String TEST_CONTROLLER_NAME = "Controller";
-    private static final String TEST_OBJECT_XML_NAME = "attachment";
-    private static final String TEST_FILE_NAME = "filename";
-    private static final String TEST_FILE_TYPE = "filetype";
-    private static final String TEST_TICKET_ATTACHMENT_OBJECT = "TicketAttachment- ID: 0";
-    private static final String TEST_ELEMENT = "<Auto Element>\n"
-                                            + "null\n"
-                                            + "</Auto Element>\n";
+    private static final int FILE_SIZE_INT = 5_000;
+    private static final int DATE_LINE = 1_000;
+    private static final String ELEMENT_NAME = "attachment";
+    private static final String ID = "id";
+    private static final String TICKET_ID = "ticketid";
+    private static final String TICKET_POST_ID = "ticketpostid";
+    private static final String FILE_SIZE= "filesize";
+    private static final String DATELINE = "dateline";
+    private static final String CONTENTS = "contents";
+    private static final String CONTROLLER_NAME = "Controller";
+    private static final String OBJECT_XML_NAME = "attachment";
+    private static final String FILE_NAME = "filename";
+    private static final String FILE_TYPE = "filetype";
+    private static final String TICKET_ATTACHMENT_OBJECT = "TicketAttachment- ID: 0";
+    private static final String ELEMENT = "<Auto Element>\n"
+                                        + "null\n"
+                                        + "</Auto Element>\n";
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -56,19 +56,19 @@ public class TicketAttachmentTest {
     @Test
     public void shouldSetController() {
         // Act
-        TicketAttachment.setController(TEST_CONTROLLER_NAME);
+        TicketAttachment.setController(CONTROLLER_NAME);
 
         // Assert
-        assertEquals(TEST_CONTROLLER_NAME, TicketAttachment.getController());
+        assertEquals(CONTROLLER_NAME, TicketAttachment.getController());
     }
 
     @Test
     public void shouldSetObjectXmlName() {
         // Act
-        TicketAttachment.setObjectXmlName(TEST_OBJECT_XML_NAME);
+        TicketAttachment.setObjectXmlName(OBJECT_XML_NAME);
 
         // Assert
-        assertEquals(TEST_OBJECT_XML_NAME, TicketAttachment.getObjectXmlName());
+        assertEquals(OBJECT_XML_NAME, TicketAttachment.getObjectXmlName());
     }
 
     @Test
@@ -101,37 +101,37 @@ public class TicketAttachmentTest {
     @Test
     public void shouldSetFileName() {
         // Act
-        ticketAttachment.setFileName(TEST_FILE_NAME);
+        ticketAttachment.setFileName(FILE_NAME);
 
         // Assert
-        assertEquals(TEST_FILE_NAME, ticketAttachment.getFileName());
+        assertEquals(FILE_NAME, ticketAttachment.getFileName());
     }
 
     @Test
     public void shouldSetFileSize() {
         // Act
-        ticketAttachment.setFileSize(TEST_FILE_SIZE_INT);
+        ticketAttachment.setFileSize(FILE_SIZE_INT);
 
         // Assert
-        assertEquals(TEST_FILE_SIZE_INT, ticketAttachment.getFileSize());
+        assertEquals(FILE_SIZE_INT, ticketAttachment.getFileSize());
     }
 
     @Test
     public void shouldSetFileType() {
         // Act
-        ticketAttachment.setFileType(TEST_FILE_TYPE);
+        ticketAttachment.setFileType(FILE_TYPE);
 
         // Assert
-        assertEquals(TEST_FILE_TYPE, ticketAttachment.getFileType());
+        assertEquals(FILE_TYPE, ticketAttachment.getFileType());
     }
 
     @Test
     public void shouldSetDateLine() {
         // Act
-        ticketAttachment.setDateLine(TEST_DATE_LINE);
+        ticketAttachment.setDateLine(DATE_LINE);
 
         // Assert
-        assertEquals(TEST_DATE_LINE, ticketAttachment.getDateLine());
+        assertEquals(DATE_LINE, ticketAttachment.getDateLine());
     }
 
     @Test
@@ -220,7 +220,7 @@ public class TicketAttachmentTest {
     @Test(expected = KayakoException.class)
     public void shouldGetAllWhenController() throws Exception {
         // Assert
-        assertNull(TicketAttachment.getAll(TEST_CONTROLLER_NAME));
+        assertNull(TicketAttachment.getAll(CONTROLLER_NAME));
     }
 
     @Test(expected = NullPointerException.class)
@@ -230,29 +230,29 @@ public class TicketAttachmentTest {
         EasyMock.expect(KEntity.getAll(EasyMock.anyString(), EasyMock.anyObject())).andReturn(new RawArrayElement());
 
         // Assert
-        assertEquals(TEST_ELEMENT, TicketAttachment.getAll(1).toString());
+        assertEquals(ELEMENT, TicketAttachment.getAll(1).toString());
     }
 
     @Test
     public void shouldCheckPopulate() throws Exception {
         // Arrange
-        RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
+        RawArrayElement rawArrayElement = new RawArrayElement(ELEMENT_NAME);
         ArrayList<RawArrayElement> components = new ArrayList<>();
 
         // Act
-        components.add(new RawArrayElement(TEST_ID));
-        components.add(new RawArrayElement(TEST_TICKET_ID));
-        components.add(new RawArrayElement(TEST_TICKET_POST_ID));
-        components.add(new RawArrayElement(TEST_FILE_NAME));
-        components.add(new RawArrayElement(TEST_FILE_SIZE));
-        components.add(new RawArrayElement(TEST_FILE_TYPE));
-        components.add(new RawArrayElement(TEST_DATELINE));
-        components.add(new RawArrayElement(TEST_CONTENTS));
+        components.add(new RawArrayElement(ID));
+        components.add(new RawArrayElement(TICKET_ID));
+        components.add(new RawArrayElement(TICKET_POST_ID));
+        components.add(new RawArrayElement(FILE_NAME));
+        components.add(new RawArrayElement(FILE_SIZE));
+        components.add(new RawArrayElement(FILE_TYPE));
+        components.add(new RawArrayElement(DATELINE));
+        components.add(new RawArrayElement(CONTENTS));
 
         rawArrayElement.setComponents(components);
 
         // Assert
-        assertEquals(TEST_TICKET_ATTACHMENT_OBJECT, ticketAttachment.populate(rawArrayElement).toString());
+        assertEquals(TICKET_ATTACHMENT_OBJECT, ticketAttachment.populate(rawArrayElement).toString());
     }
 
     @Test
@@ -264,7 +264,7 @@ public class TicketAttachmentTest {
         // Act
         ticketAttachment.setId(1);
         ticketAttachment.setTicketId(1);
-        ticketAttachment.setFileName(TEST_FILE_NAME);
+        ticketAttachment.setFileName(FILE_NAME);
         ticketAttachment.setContents(contents);
 
         // Assert
@@ -281,12 +281,12 @@ public class TicketAttachmentTest {
         // Act
         ticket.setId(1);
         ticketPost.setTicket(ticket);
-        ticketAttachment = TicketAttachment.createTicketAttachment(ticketPost, contents, TEST_FILE_NAME);
+        ticketAttachment = TicketAttachment.createTicketAttachment(ticketPost, contents, FILE_NAME);
 
         // Assert
         collector.checkThat(ticketAttachment.getTicketPost(), equalTo(ticketPost));
         collector.checkThat(ticketAttachment.getContents(), equalTo(contents));
-        collector.checkThat(ticketAttachment.getFileName(), equalTo(TEST_FILE_NAME));
+        collector.checkThat(ticketAttachment.getFileName(), equalTo(FILE_NAME));
     }
 
     @Test(expected = KayakoException.class)
@@ -298,18 +298,18 @@ public class TicketAttachmentTest {
     @Test
     public void shouldRefineToArray() throws Exception {
         // Arrange
-        RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
+        RawArrayElement rawArrayElement = new RawArrayElement(ELEMENT_NAME);
         ArrayList<RawArrayElement> components = new ArrayList<>();
 
         // Act
-        components.add(new RawArrayElement(TEST_ID));
-        components.add(new RawArrayElement(TEST_TICKET_ID));
-        components.add(new RawArrayElement(TEST_TICKET_POST_ID));
-        components.add(new RawArrayElement(TEST_FILE_NAME));
-        components.add(new RawArrayElement(TEST_FILE_SIZE));
-        components.add(new RawArrayElement(TEST_FILE_TYPE));
-        components.add(new RawArrayElement(TEST_DATELINE));
-        components.add(new RawArrayElement(TEST_CONTENTS));
+        components.add(new RawArrayElement(ID));
+        components.add(new RawArrayElement(TICKET_ID));
+        components.add(new RawArrayElement(TICKET_POST_ID));
+        components.add(new RawArrayElement(FILE_NAME));
+        components.add(new RawArrayElement(FILE_SIZE));
+        components.add(new RawArrayElement(FILE_TYPE));
+        components.add(new RawArrayElement(DATELINE));
+        components.add(new RawArrayElement(CONTENTS));
 
         rawArrayElement.setComponents(components);
 
