@@ -205,23 +205,14 @@ public class UserOrganizationTest {
         // Arrange
         RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
         ArrayList<RawArrayElement> components = new ArrayList<>();
+        String[] elements = {TEST_ID, TEST_NAME, TEST_ORGANIZATION_TYPE, TEST_ADDRESS, TEST_CITY,
+                TEST_STATE, TEST_POSTAL_CODE, TEST_COUNTRY, TEST_PHONE, TEST_FAX, TEST_WEBSITE,
+                TEST_DATE_LINE, TEST_LAST_UPDATE, TEST_SLA_PLAN_ID, TEST_SLA_PLAN_EXPIRY};
 
         // Act
-        components.add(new RawArrayElement(TEST_ID));
-        components.add(new RawArrayElement(TEST_NAME));
-        components.add(new RawArrayElement(TEST_ORGANIZATION_TYPE));
-        components.add(new RawArrayElement(TEST_ADDRESS));
-        components.add(new RawArrayElement(TEST_CITY));
-        components.add(new RawArrayElement(TEST_STATE));
-        components.add(new RawArrayElement(TEST_POSTAL_CODE));
-        components.add(new RawArrayElement(TEST_COUNTRY));
-        components.add(new RawArrayElement(TEST_PHONE));
-        components.add(new RawArrayElement(TEST_FAX));
-        components.add(new RawArrayElement(TEST_WEBSITE));
-        components.add(new RawArrayElement(TEST_DATE_LINE));
-        components.add(new RawArrayElement(TEST_LAST_UPDATE));
-        components.add(new RawArrayElement(TEST_SLA_PLAN_ID));
-        components.add(new RawArrayElement(TEST_SLA_PLAN_EXPIRY));
+        for (String element : elements) {
+            components.add(new RawArrayElement(element));
+        }
 
         rawArrayElement.setComponents(components);
 
