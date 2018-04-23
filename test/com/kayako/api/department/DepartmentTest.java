@@ -4,6 +4,7 @@ import com.kayako.api.enums.AccessTypeEnum;
 import com.kayako.api.enums.AppEnum;
 import com.kayako.api.exception.KayakoException;
 import com.kayako.api.rest.RawArrayElement;
+import com.kayako.api.ticket.Ticket;
 import com.kayako.api.user.UserGroup;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,7 +18,10 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 public class DepartmentTest {
 
@@ -41,7 +45,6 @@ public class DepartmentTest {
     private static final String TEST_FULLNAME = "fullname";
     private static final String TEST_EMAIL = "email";
     private static final String TEST_CONTENTS = "contents";
-    private static final String TEST_SUBJECT = "subject";
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -174,7 +177,10 @@ public class DepartmentTest {
     @Test
     public void shouldCreateAutoTicket() throws Exception {
         // Act
-        department.createAutoTicket(TEST_FULLNAME, TEST_EMAIL, TEST_CONTENTS, TEST_EMAIL);
+        Ticket ticket = department.createAutoTicket(TEST_FULLNAME, TEST_EMAIL, TEST_CONTENTS, TEST_EMAIL);
+
+        // Assert
+        collector.checkThat(ticket.getFullName(), is(TEST_FULLNAME));
     }
 
     @Test
