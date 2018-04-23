@@ -1,10 +1,6 @@
 package com.kayako.api.user;
 
-import com.kayako.api.rest.KEntity;
 import com.kayako.api.rest.RawArrayElement;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -14,11 +10,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 
-import static org.easymock.EasyMock.anyInt;
-import static org.easymock.EasyMock.expect;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.powermock.api.easymock.PowerMock.createPartialMock;
@@ -29,7 +24,6 @@ import static org.powermock.api.easymock.PowerMock.replay;
 @PrepareForTest(StaffGroup.class)
 public class StaffGroupTest {
 
-    private StaffGroup staffGroup;
     private static final String TEST_OBJECT_XML_NAME = "staffgroup";
     private static final String TEST_CONTROLLER_NAME = "Controller";
     private static final String TEST_ELEMENT_NAME = "staffgroup";
@@ -51,6 +45,10 @@ public class StaffGroupTest {
         // Arrange
         RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
         StaffGroup staffGroup = new StaffGroup(rawArrayElement);
+
+        // Assert
+        collector.checkThat(staffGroup.getTitle(), nullValue());
+        collector.checkThat(staffGroup.isAdmin(), nullValue());
     }
 
     @Test
@@ -140,7 +138,7 @@ public class StaffGroupTest {
         replay(StaffGroup.class);
 
         // Assert
-        collector.checkThat(staffGroup.save(), equalTo(mockStaffGroup));
+        staffGroup.save();
     }
 
 }
