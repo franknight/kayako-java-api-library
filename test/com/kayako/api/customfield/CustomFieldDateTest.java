@@ -26,7 +26,9 @@ public class CustomFieldDateTest {
     private static final String NAME_KEY = "name";
     private static final String TITLE_VALUE = "TITLE";
     private static final String NAME_VALUE = "NAME_VALUE";
+    private static final String IMPROPER_DATE_STR = "111,222";
     private static final int INT_ID = 1;
+    private static final String ELEMENT_NAME = "ELEMENT_NAME"; // apart from value of objectXmlName in Custom Field
 
     private String dateString;
     private static Timestamp timestamp;
@@ -74,18 +76,35 @@ public class CustomFieldDateTest {
         collector.checkThat(customFieldDate.getValue(), equalTo(dateString));
     }
 
+    @Test(expected = KayakoException.class)
+    public void givenImproperDateStrWhenSetValueThenParseException() throws KayakoException {
+        customFieldDate.setValue(IMPROPER_DATE_STR);
+    }
+
     @Test
     public void givenDateStrWhenSetDateThenCustomFieldDate() throws ParseException {
         collector.checkThat(customFieldDate.setDate(dateString), sameInstance(customFieldDate));
         collector.checkThat(customFieldDate.getDate(), equalTo(dateString));
     }
 
+    @Test (expected = KayakoException.class)
+    public void givenRawArrayElementWhenPopulateThenKayakoExpection() throws KayakoException {
+        rawArrayElement = new RawArrayElement(ELEMENT_NAME);
+        customFieldDate.populate(rawArrayElement);
+    }
+
     @Test
-    public void givenRawArrayElementWhenPopulateThenCustomField() throws KayakoException {
+    public void givenRawArrayElementWhenPopulateThenCustomFieldDate() throws KayakoException {
         rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, dateString);
         customFieldDate.populate(rawArrayElement);
         collector.checkThat(customFieldDate.getTitle(), equalTo(TITLE_VALUE));
         collector.checkThat(customFieldDate.getName(), equalTo(NAME_VALUE));
         collector.checkThat(customFieldDate.getTimestamp(), equalTo(timestamp));
+    }
+
+    @Test
+    public void givenRawArrayElementWithImproperDateStrWhenPopulateThenCustomFieldDate() throws KayakoException {
+        rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, IMPROPER_DATE_STR);
+        collector.checkThat(customFieldDate.populate(rawArrayElement), sameInstance(customFieldDate));
     }
 }
