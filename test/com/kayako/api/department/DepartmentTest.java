@@ -3,6 +3,7 @@ package com.kayako.api.department;
 import com.kayako.api.enums.AccessTypeEnum;
 import com.kayako.api.enums.AppEnum;
 import com.kayako.api.exception.KayakoException;
+import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.user.UserGroup;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,8 +26,22 @@ public class DepartmentTest {
 
     private static final String TEST_DEPARTMENT_NAME = "Department A";
     private static final String TEST_ICON_NAME = "Icon A";
-    private static final String TEST_XML_NAME = "Xml A";
+    private static final String TEST_XML_NAME = "department";
     private static final String TEST_CONTROLLER_NAME = "Controller A";
+    private static final String TEST_ELEMENT_NAME = "department";
+    private static final String TEST_ID = "id";
+    private static final String TEST_TITLE = "title";
+    private static final String TEST_DISPLAY_ORDER = "displayorder";
+    private static final String TEST_DEPARTMENT_ID = "departmentid";
+    private static final String TEST_DISPLAY_ICON = "displayicon";
+    private static final String TEST_TYPE = "type";
+    private static final String TEST_APP = "app";
+    private static final String TEST_USER_VISIBILITY_CUSTOM = "uservisibilitycustom";
+    private static final String TEST_USER_GROUPS = "usergroups";
+    private static final String TEST_FULLNAME = "fullname";
+    private static final String TEST_EMAIL = "email";
+    private static final String TEST_CONTENTS = "contents";
+    private static final String TEST_SUBJECT = "subject";
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -157,6 +172,18 @@ public class DepartmentTest {
     }
 
     @Test
+    public void shouldCreateAutoTicket() throws Exception {
+        // Act
+        department.createAutoTicket(TEST_FULLNAME, TEST_EMAIL, TEST_CONTENTS, TEST_EMAIL);
+    }
+
+    @Test
+    public void shouldCreateSubDepartment() {
+        // Assert
+        assertEquals(TEST_TITLE, department.createSubDepartment(TEST_TITLE).getTitle());
+    }
+
+    @Test
     public void shouldCheckIsVisibleToUserGroup() throws KayakoException {
         // Arrange
         Department departmentToCheckFalse = new Department(TEST_DEPARTMENT_NAME);
@@ -180,6 +207,46 @@ public class DepartmentTest {
     public void shouldCheckToString() {
         // Assert
         assertEquals("Department : " + TEST_DEPARTMENT_NAME, department.toString());
+    }
+
+    @Test
+    public void shouldCheckPopulate() throws Exception {
+        // Arrange
+        RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
+        ArrayList<RawArrayElement> components = new ArrayList<>();
+        String[] elements = {TEST_ID, TEST_TITLE, TEST_DISPLAY_ORDER, TEST_DEPARTMENT_ID,
+                TEST_DISPLAY_ICON, TEST_TYPE, TEST_APP, TEST_USER_VISIBILITY_CUSTOM, TEST_USER_GROUPS};
+
+        // Act
+        for (String element : elements) {
+            components.add(new RawArrayElement(element));
+        }
+
+        rawArrayElement.setComponents(components);
+
+        // Assert
+        assertEquals("Department : ", department.populate(rawArrayElement).toString());
+
+    }
+
+    @Test
+    public void shouldBuildHashMap() {
+        // Arrange
+        department = new Department();
+        ArrayList<Integer> userGroupIds = new ArrayList<>();
+
+        // Act
+        userGroupIds.add(1);
+        department.setTitle(TEST_DEPARTMENT_NAME);
+        department.setType(AccessTypeEnum.PUBLIC);
+        department.setApp(AppEnum.TICKETS);
+        department.setDisplayOrder(1);
+        department.setParentDepartmentId(1);
+        department.setUserVisibilityCustom(true);
+        department.setUserGroupIds(userGroupIds);
+
+        // Assert
+        assertEquals(7, department.buildHashMap(true).size());
     }
 
 }
