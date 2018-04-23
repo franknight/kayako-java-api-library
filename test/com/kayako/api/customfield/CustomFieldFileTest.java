@@ -32,16 +32,19 @@ import com.kayako.api.exception.KayakoException;
 @PrepareForTest(Helper.class)
 public class CustomFieldFileTest {
 
-    private static final String CONTENTS = "CONTENTS";
-    private static final String CONTENTS_2 = "CONTENTS_2";
     private static final String FILE_NAME = "filename";
     private static final String FILE_PATH = "file_path";
+    private static final String ELEMENT_NAME = "elementName"; // apart from value of objectXmlName in CustomFieldFile;
+    private static final String CONTENTS = "contents";
+    private static final String CONTENT_FROM_FILE = "contentFromFile";
+    private static final String IMPROPER_CONTENT = "IMPROPER_CONTENT"; // not encoded with Base64
     private CustomFieldFile customFieldFile;
     private CustomFieldGroup customFieldGroup;
     private Map<String, String> attributes;
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
+    private RawArrayElement rawArrayElement;
 
     @Before
     public void setUp(){
@@ -77,22 +80,32 @@ public class CustomFieldFileTest {
 
     @Test
     public void givenElementWhenPopulateThenCustomFieldFile() throws KayakoException {
-        RawArrayElement rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, Base64.encodeBytes(CONTENTS.getBytes()));
+        rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, Base64.encodeBytes(CONTENTS.getBytes()));
         collector.checkThat(customFieldFile.populate(rawArrayElement), sameInstance(customFieldFile));
     }
 
     @Test
     public void shouldSetContentFromFile() throws IOException {
         File file = new File(FILE_PATH);
-        customFieldFile.setFileName(FILE_NAME); //
+        customFieldFile.setFileName(FILE_NAME);
 
         mockStatic(Helper.class);
-        expect(Helper.readBytesFromFile(file)).andReturn(CONTENTS_2.getBytes());
+        expect(Helper.readBytesFromFile(file)).andReturn(CONTENT_FROM_FILE.getBytes());
         replay(Helper.class);
         customFieldFile.setContentFromFile(file);
         verify(Helper.class);
 
-        collector.checkThat(customFieldFile.getContents(), equalTo(CONTENTS_2.getBytes()));
+        collector.checkThat(customFieldFile.getContents(), equalTo(CONTENT_FROM_FILE.getBytes()));
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void givenImproperFileWhenSetContentFromFileThenTrowIOException() throws IOException {
+        File file = new File(FILE_PATH);
+        customFieldFile.setFileName(FILE_NAME);
+        // to prevent print stack trace of the exception into standard error output stack trace
+        // after Helper.readBytesFromFile throws IOException
+        System.setErr(null);
+        customFieldFile.setContentFromFile(file);
     }
 
     @Test
@@ -109,5 +122,20 @@ public class CustomFieldFileTest {
         HashMap<String, HashMap<String, String>> builtFileHashMap = customFieldFile.buildFilesHashMap();
         collector.checkThat(builtFileHashMap, is(notNullValue()));
         collector.checkThat(builtFileHashMap, instanceOf(HashMap.class));
+    }
+
+    @Test (expected = KayakoException.class)
+    public void givenRawArrayElementWhenPopulateThenKayakoExpection() throws KayakoException {
+        rawArrayElement = new RawArrayElement(ELEMENT_NAME);
+        customFieldFile.populate(rawArrayElement);
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void givenImproperContentWhenPopulateThenNotSetContent() throws KayakoException {
+        rawArrayElement = new RawArrayElement(CustomFieldFile.getObjectXmlName(), attributes, IMPROPER_CONTENT);
+        // to prevent print stack trace of the exception into standard error output stack trace
+        // after Base64 throws IOException
+        System.setErr(null);
+        customFieldFile.populate(rawArrayElement);
     }
 }

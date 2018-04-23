@@ -1,21 +1,36 @@
 package com.kayako.api.customfield;
 
 import static java.lang.Boolean.TRUE;
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.mock;
-import static org.easymock.EasyMock.verify;
+import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.powermock.api.easymock.PowerMock.replay;
+import static org.powermock.api.easymock.PowerMock.verify;
+import static org.powermock.api.easymock.PowerMock.mockStatic;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.rules.ErrorCollector;
+
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+
+import com.kayako.api.rest.KEntity;
 import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.exception.KayakoException;
+import com.kayako.api.enums.CustomFieldDefinitionTypeEnum;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(KEntity.class)
 public class CustomFieldTest {
     private CustomField customField;
     private CustomFieldGroup customFieldGroupMock;
@@ -23,13 +38,18 @@ public class CustomFieldTest {
     private RawArrayElement rawArrayElement;
 
     private static final int INT_ID = 1;
+    private static final int INT_TYPE = 10;
+    private static final String FIELD_TYPE = "fieldtype";
     private static final String STR_VALUE = "1";
     private static final String NAME_KEY = "name";
+    private static final String FIELD_NAME = "fieldname";
     private static final String NAME_VALUE = "NAME_VALUE";
     private static final String TITLE_KEY = "title";
     private static final String TITLE_VALUE = "TITLE";
     private static final String CONTENT = "CONTENT";
     private static final String CONTROLLER = "CONTROLLER";
+    private static final String OBJECT_XML_NAME = "objectXmlName";
+    private static final String OBJECT_TO_STRING = "CustomField- ID: " + INT_ID;
     private static final CustomFieldOption CUSTOM_FIELD_OPTION = new CustomFieldOption();
     private Map<String, String> attributes;
 
@@ -123,6 +143,28 @@ public class CustomFieldTest {
     }
 
     @Test
+    public void givenTrueWhenGetDefinitionThenCustomFieldDefinition() throws KayakoException {
+        mockStatic(KEntity.class);
+        RawArrayElement rawArrayElement1 = new RawArrayElement();
+        ArrayList<RawArrayElement> rawArrayElementList = new ArrayList<>();
+        rawArrayElement  = new RawArrayElement();
+        rawArrayElement.setElementName(CustomFieldDefinition.getObjectXmlName());
+        rawArrayElement.setAttribute(FIELD_NAME, FIELD_NAME);
+        rawArrayElement.setAttribute(FIELD_TYPE, CustomFieldDefinitionTypeEnum.CHECKBOX.getString());
+
+        rawArrayElementList.add(rawArrayElement);
+
+        rawArrayElement1.setComponents(rawArrayElementList);
+        customField.setName(FIELD_NAME);
+        expect(KEntity.getAll(CustomFieldDefinition.getController())).andReturn(rawArrayElement1);
+        replay(KEntity.class);
+        customField.getDefinition(TRUE);
+        verify(KEntity.class);
+        collector.checkThat(customField.getDefinition(), is(notNullValue()));
+        collector.checkThat(customField.getDefinition(), not(equalTo(customFieldDefinitionMock)));
+    }
+
+    @Test
     public void givenDefinitionWhenSetDefinitionThenCustomField() throws KayakoException {
         collector.checkThat(customField.setDefinition(customFieldDefinitionMock), sameInstance(customField));
         collector.checkThat(customField.getDefinition(), equalTo(customFieldDefinitionMock));
@@ -135,8 +177,27 @@ public class CustomFieldTest {
     }
 
     @Test
-    public void givenDefinitionWhenSetDefinitionThenCustomFiel() {
+    public void givenDefinitionWhenSetCustomFieldGroupThenCustomField() {
         collector.checkThat(customField.setCustomFieldGroup(customFieldGroupMock), sameInstance(customField));
         collector.checkThat(customField.getCustomFieldGroup(), equalTo(customFieldGroupMock));
+    }
+
+    @Test
+    public void shouldSetObjectXmlName() {
+        CustomField.setObjectXmlName(OBJECT_XML_NAME);
+        collector.checkThat(CustomField.getObjectXmlName(), equalTo(OBJECT_XML_NAME));
+    }
+
+    @Test
+    public void shouldSetType() {
+        customField.setType(INT_TYPE);
+        collector.checkThat(customField.getType(), equalTo(INT_TYPE));
+    }
+
+    @Test
+    public void shouldToString() {
+        customField.setId(INT_ID);
+
+        collector.checkThat(customField.toString(), equalTo(OBJECT_TO_STRING));
     }
 }
