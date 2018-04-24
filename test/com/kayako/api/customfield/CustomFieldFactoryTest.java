@@ -1,6 +1,5 @@
 package com.kayako.api.customfield;
 
-
 import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.CoreMatchers.is;

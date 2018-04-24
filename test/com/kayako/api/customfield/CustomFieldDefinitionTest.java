@@ -19,7 +19,11 @@ import java.util.ArrayList;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
 import static org.easymock.EasyMock.expect;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.powermock.api.easymock.PowerMock.replay;
 import static org.powermock.api.easymock.PowerMock.verify;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
@@ -80,8 +84,6 @@ public class CustomFieldDefinitionTest {
         attributes.put(DISPLAY_ORDER, STR_INT_ONE);
         attributes.put(ENCRYPTED, STR_INT_ONE);
         attributes.put(DESCRIPTION, STR_VALUE);
-
-
 
         component1 = new RawArrayElement(CustomFieldOption.getObjectXmlName(), new HashMap<>());
         component1.setAttribute(IS_SELECTED, STR_INT_ZERO);
