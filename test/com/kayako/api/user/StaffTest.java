@@ -2,7 +2,6 @@ package com.kayako.api.user;
 
 import com.kayako.api.department.Department;
 import com.kayako.api.rest.RawArrayElement;
-import com.kayako.api.ticket.Ticket;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,13 +10,11 @@ import org.junit.rules.ErrorCollector;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class StaffTest {
 
-    private Staff staff;
     private static final String TEST_ELEMENT_NAME = "staff";
     private static final String TEST_OBJECT_XML_NAME = "staff";
     private static final String TEST_CONTROLLER_NAME = "Controller";
@@ -41,9 +38,9 @@ public class StaffTest {
     private static final String TEST_SIGNATURE = "signature";
     private static final String TEST_TIMEZONE = "timezone";
     private static final String TEST_STAFF_OBJECT = "Staff- ID: 0";
-
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
+    private Staff staff;
 
     @Before
     public void setUp() {
@@ -54,7 +51,8 @@ public class StaffTest {
     public void shouldCreatedConstructorWithArguments() throws Exception {
         // Arrange
         StaffGroup staffGroup = new StaffGroup(TEST_TITLE);
-        Staff newStaff = new Staff(TEST_FIRST_NAME, TEST_LAST_NAME, TEST_USERNAME, TEST_EMAIL, staffGroup, TEST_PASSWORD);
+        Staff newStaff = new Staff(TEST_FIRST_NAME, TEST_LAST_NAME, TEST_USERNAME, TEST_EMAIL, staffGroup,
+                TEST_PASSWORD);
 
         // Assert
         collector.checkThat(newStaff.getFirstName(), equalTo(TEST_FIRST_NAME));
@@ -187,9 +185,9 @@ public class StaffTest {
         // Arrange
         RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
         ArrayList<RawArrayElement> components = new ArrayList<>();
-        String[] elements = { TEST_ID, TEST_STAFF_GROUP_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_FULLNAME,
+        String[] elements = {TEST_ID, TEST_STAFF_GROUP_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_FULLNAME,
                 TEST_USERNAME, TEST_EMAIL, TEST_DESIGNATION, TEST_GREETING, TEST_MOBILE_NUMBER,
-                TEST_IS_ENABLED, TEST_ENABLE_DST, TEST_SIGNATURE, TEST_TIMEZONE };
+                TEST_IS_ENABLED, TEST_ENABLE_DST, TEST_SIGNATURE, TEST_TIMEZONE};
 
         // Act
         for (String element : elements) {
