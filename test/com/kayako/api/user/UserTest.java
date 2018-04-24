@@ -10,38 +10,41 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
 import java.util.ArrayList;
+import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.CoreMatchers.*;
 
 public class UserTest {
 
     private User user;
-    private static final String TEST_ELEMENT_NAME = "user";
-    private static final String TEST_OBJECT_XML_NAME = "user";
-    private static final String TEST_CONTROLLER_NAME = "controller";
-    private static final String TEST_CONTENT = "content";
-    private static final String TEST_SUBJECT = "subject";
-    private static final String TEST_ID = "id";
-    private static final String TEST_USER_GROUP_ID = "usergroupid";
-    private static final String TEST_USER_ROLE = "userrole";
-    private static final String TEST_USER_ORGANIZATION_ID = "userorganizationid";
-    private static final String TEST_SALUTATION = "salutation";
-    private static final String TEST_USER_EXPIRY = "userexpiry";
-    private static final String TEST_FULL_NAME = "fullname";
-    private static final String TEST_EMAIL = "email";
-    private static final String TEST_DESIGNATION = "designation";
-    private static final String TEST_PHONE = "phone";
-    private static final String TEST_DATELINE = "dateline";
-    private static final String TEST_LAST_VISIT = "lastvisit";
-    private static final String TEST_IS_ENABLED = "isenabled";
-    private static final String TEST_TIMEZONE = "timezone";
-    private static final String TEST_ENABLE_DST = "enabledst";
-    private static final String TEST_SLA_PLAN_ID = "slaplanid";
-    private static final String TEST_SLA_PLAN_EXPIRY = "slaplanexpiry";
-    private static final String TEST_PASSWORD = "password";
-    private static final String TEST_USER_OBJECT = "User- ID: 0";
+    private static final String ELEMENT_NAME = "user";
+    private static final String OBJECT_XML_NAME = "user";
+    private static final String CONTROLLER_NAME = "controller";
+    private static final String CONTENT = "content";
+    private static final String SUBJECT = "subject";
+    private static final String ID = "id";
+    private static final String USER_GROUP_ID = "usergroupid";
+    private static final String USER_ROLE = "userrole";
+    private static final String USER_ORGANIZATION_ID = "userorganizationid";
+    private static final String SALUTATION = "salutation";
+    private static final String USER_EXPIRY = "userexpiry";
+    private static final String FULL_NAME = "fullname";
+    private static final String EMAIL = "email";
+    private static final String DESIGNATION = "designation";
+    private static final String PHONE = "phone";
+    private static final String DATELINE = "dateline";
+    private static final String LAST_VISIT = "lastvisit";
+    private static final String IS_ENABLED = "isenabled";
+    private static final String TIMEZONE = "timezone";
+    private static final String ENABLE_DST = "enabledst";
+    private static final String SLA_PLAN_ID = "slaplanid";
+    private static final String SLA_PLAN_EXPIRY = "slaplanexpiry";
+    private static final String PASSWORD = "password";
+    private static final String USER_OBJECT = "User- ID: 0";
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -63,28 +66,28 @@ public class UserTest {
     @Test
     public void shouldSetObjectXmlName() {
         // Act
-        User.setObjectXmlName(TEST_OBJECT_XML_NAME);
+        User.setObjectXmlName (OBJECT_XML_NAME);
 
         // Assert
-        assertEquals(TEST_OBJECT_XML_NAME, User.getObjectXmlName());
+        assertEquals (OBJECT_XML_NAME, User.getObjectXmlName());
     }
 
     @Test
     public void shouldSetController() {
         // Act
-        User.setController(TEST_CONTROLLER_NAME);
+        User.setController (CONTROLLER_NAME);
 
         // Assert
-        assertEquals(TEST_CONTROLLER_NAME, User.getController());
+        assertEquals (CONTROLLER_NAME, User.getController());
     }
 
     @Test
     public void shouldSetEmail() {
         // Act
-        user.setEmail(TEST_EMAIL);
+        user.setEmail (EMAIL);
 
         // Assert
-        assertEquals(TEST_EMAIL, user.getEmail());
+        assertEquals (EMAIL, user.getEmail());
     }
 
     @Test
@@ -99,28 +102,28 @@ public class UserTest {
     @Test
     public void shouldSetTimezone() {
         // Act
-        user.setTimeZone(TEST_TIMEZONE);
+        user.setTimeZone (TIMEZONE);
 
         // Assert
-        assertEquals(TEST_TIMEZONE, user.getTimeZone());
+        assertEquals (TIMEZONE, user.getTimeZone());
     }
 
     @Test
     public void shouldSetPhone() {
         // Act
-        user.setPhone(TEST_PHONE);
+        user.setPhone (PHONE);
 
         // Assert
-        assertEquals(TEST_PHONE, user.getPhone());
+        assertEquals (PHONE, user.getPhone());
     }
 
     @Test
     public void shouldSetUserRole() {
         // Act
-        user.setUserRole(TEST_USER_ROLE);
+        user.setUserRole (USER_ROLE);
 
         // Assert
-        assertEquals(TEST_USER_ROLE, user.getUserRole());
+        assertEquals (USER_ROLE, user.getUserRole());
     }
 
     @Test
@@ -139,7 +142,7 @@ public class UserTest {
 
         // Act
         user.setEmails(emails);
-        user.addEmail(TEST_EMAIL);
+        user.addEmail (EMAIL);
 
         // Assert
         assertEquals(1, user.getEmails().size());
@@ -147,47 +150,59 @@ public class UserTest {
 
     @Test
     public void shouldSetExpiry() {
+        // Arrange
+        int expiry = 1;
+
         // Act
-        user.setUserExpiry(1);
+        user.setUserExpiry(expiry);
 
         // Assert
-        assertEquals(1, user.getUserExpiry());
+        assertEquals(expiry, user.getUserExpiry());
     }
 
     @Test
     public void shouldSetUSerOrganizationId() {
+        // Arrange
+        int userOrganizationId = 1;
+
         // Act
-        user.setUserOrganizationId(1);
+        user.setUserOrganizationId(userOrganizationId);
 
         // Assert
-        assertEquals(1, user.getUserOrganizationId());
+        assertEquals(userOrganizationId, user.getUserOrganizationId());
     }
 
     @Test
     public void shouldSetDesignation() {
         // Act
-        user.setDesignation(TEST_DESIGNATION);
+        user.setDesignation (DESIGNATION);
 
         // Assert
-        assertEquals(TEST_DESIGNATION, user.getDesignation());
+        assertEquals (DESIGNATION, user.getDesignation());
     }
 
     @Test
     public void shouldSetDateLine() {
+        // Arrange
+        int dateLine = 1;
+
         // Act
-        user.setDateLine(1);
+        user.setDateLine(dateLine);
 
         // Assert
-        assertEquals(1, user.getDateLine());
+        assertEquals(dateLine, user.getDateLine());
     }
 
     @Test
     public void shouldSetLastVisit() {
+        // Arrange
+        int lastVisit = 1;
+
         // Act
-        user.setLastVisit(1);
+        user.setLastVisit(lastVisit);
 
         // Assert
-        assertEquals(1, user.getLastVisit());
+        assertEquals(lastVisit, user.getLastVisit());
     }
 
     @Test
@@ -201,38 +216,48 @@ public class UserTest {
 
     @Test
     public void shouldSetSLAPlanId() {
+        // Arrange
+        int SLAPlanId = 1;
+
         // Act
-        user.setSLAPlanId(1);
+        user.setSLAPlanId(SLAPlanId);
 
         // Assert
-        assertEquals(1, user.getSLAPlanId());
+        assertEquals(SLAPlanId, user.getSLAPlanId());
     }
 
     @Test
     public void shouldSetSLAPlanExpiry() {
+        // Arrange
+        int SLAPlanExpiry = 1;
+
         // Act
-        user.setSLAPlanExpiry(1);
+        user.setSLAPlanExpiry(SLAPlanExpiry);
 
         // Assert
-        assertEquals(1, user.getSLAPlanExpiry());
+        assertEquals(SLAPlanExpiry, user.getSLAPlanExpiry());
     }
 
     @Test
     public void shouldSetSendWelcomeEmail() {
+        // Arrange
+        boolean newValue = !user.isSendWelcomeEmail();
+
         // Act
-        user.setSendWelcomeEmail(true);
+        user.setSendWelcomeEmail(newValue);
 
         // Assert
-        assertTrue(user.isSendWelcomeEmail());
+        assertEquals(newValue, user.isSendWelcomeEmail());
     }
 
     @Test
     public void shouldSetUserOrganization() throws Exception {
         // Arrange
         UserOrganization userOrganization = new UserOrganization();
+        int id = 1;
 
         // Act
-        userOrganization.setId(1);
+        userOrganization.setId(id);
         user.setUserOrganization(userOrganization);
 
         // Assert
@@ -242,11 +267,11 @@ public class UserTest {
     @Test
     public void shouldCheckPopulate() throws Exception {
         // Arrange
-        RawArrayElement rawArrayElement = new RawArrayElement(TEST_ELEMENT_NAME);
+        RawArrayElement rawArrayElement = new RawArrayElement (ELEMENT_NAME);
         ArrayList<RawArrayElement> components = new ArrayList<>();
-        String[] elements = {TEST_ID, TEST_USER_GROUP_ID, TEST_USER_ROLE, TEST_USER_ORGANIZATION_ID, TEST_SALUTATION,
-                TEST_USER_EXPIRY, TEST_FULL_NAME, TEST_EMAIL, TEST_DESIGNATION, TEST_PHONE, TEST_DATELINE,
-                TEST_LAST_VISIT, TEST_IS_ENABLED, TEST_TIMEZONE, TEST_ENABLE_DST, TEST_SLA_PLAN_ID, TEST_SLA_PLAN_EXPIRY};
+        String[] elements = {ID, USER_GROUP_ID, USER_ROLE, USER_ORGANIZATION_ID, SALUTATION,
+                USER_EXPIRY, FULL_NAME, EMAIL, DESIGNATION, PHONE, DATELINE,
+                LAST_VISIT, IS_ENABLED, TIMEZONE, ENABLE_DST, SLA_PLAN_ID, SLA_PLAN_EXPIRY};
 
         // Act
         for (String element : elements) {
@@ -256,31 +281,33 @@ public class UserTest {
         rawArrayElement.setComponents(components);
 
         // Assert
-        assertEquals(TEST_USER_OBJECT, user.populate(rawArrayElement).toString());
+        assertEquals (USER_OBJECT, user.populate(rawArrayElement).toString());
     }
 
     @Test
     public void shouldBuildHashMap() {
         // Act
-        user.setFullName(TEST_FULL_NAME);
+        user.setFullName (FULL_NAME);
         user.setUserGroupId(1);
-        user.setPassword(TEST_PASSWORD);
+        user.setPassword (PASSWORD);
         user.setSendWelcomeEmail(true);
-        user.setEmail(TEST_EMAIL);
+        user.setEmail (EMAIL);
         user.setUserOrganizationId(1);
         user.setSalutation(SalutationEnum.MR);
-        user.setDesignation(TEST_DESIGNATION);
-        user.setPhone(TEST_PHONE);
+        user.setDesignation (DESIGNATION);
+        user.setPhone (PHONE);
         user.setEnabled(true);
-        user.setUserRole(TEST_USER_ROLE);
-        user.setTimeZone(TEST_TIMEZONE);
+        user.setUserRole (USER_ROLE);
+        user.setTimeZone (TIMEZONE);
         user.setDST(true);
         user.setSLAPlanId(1);
         user.setSLAPlanExpiry(1);
         user.setUserExpiry(1);
 
+        Map<String, String> map = user.buildHashMap(true);
+
         // Assert
-        assertEquals(16, user.buildHashMap(true).size());
+        collector.checkThat(map.size(), is(16));
     }
 
     @Test
@@ -289,7 +316,7 @@ public class UserTest {
         Department department = new Department();
 
         // Act
-        user.createTicket(department, TEST_CONTENT, TEST_SUBJECT);
+        user.createTicket(department, CONTENT, SUBJECT);
     }
 
 }
