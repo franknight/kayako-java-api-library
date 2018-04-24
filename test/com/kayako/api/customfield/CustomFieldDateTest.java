@@ -1,5 +1,8 @@
 package com.kayako.api.customfield;
 
+import static com.kayako.tests.Test.API_KEY;
+import static com.kayako.tests.Test.API_URL;
+import static com.kayako.tests.Test.SECRET_KEY;
 import static org.easymock.EasyMock.mock;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -18,15 +21,12 @@ import com.kayako.api.exception.KayakoException;
 import com.kayako.api.configuration.Configuration;
 
 public class CustomFieldDateTest {
-    private static final String API_KEY = "API_KEY";
-    private static final String SECRET_KEY = "SECRET_KEY";
-    private static final String API_URL = "API_URL";
     private static final String CONTROLLER = "CONTROLLER";
     private static final String TITLE_KEY = "title";
     private static final String NAME_KEY = "name";
     private static final String TITLE_VALUE = "TITLE";
     private static final String NAME_VALUE = "NAME_VALUE";
-    private static final String IMPROPER_DATE_STR = "111,222";
+    private static final String INVALID_DATE_STR = "111,222";
     private static final int INT_ID = 1;
     private static final String ELEMENT_NAME = "ELEMENT_NAME"; // apart from value of objectXmlName in Custom Field
 
@@ -78,7 +78,7 @@ public class CustomFieldDateTest {
 
     @Test(expected = KayakoException.class)
     public void givenImproperDateStrWhenSetValueThenParseException() throws KayakoException {
-        customFieldDate.setValue(IMPROPER_DATE_STR);
+        customFieldDate.setValue(INVALID_DATE_STR);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class CustomFieldDateTest {
 
     @Test
     public void givenRawArrayElementWithImproperDateStrWhenPopulateThenCustomFieldDate() throws KayakoException {
-        rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, IMPROPER_DATE_STR);
+        rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, INVALID_DATE_STR);
         collector.checkThat(customFieldDate.populate(rawArrayElement), sameInstance(customFieldDate));
     }
 }
