@@ -36,6 +36,7 @@ public class CustomFieldFactoryTest {
     private static final String STR_VALUE4NAME = "strValue4Name";
     private static final String STR_VALUE4TITLE= "strValue4Title";
     private static final String INVALID_ELEMENT_NAME = "invalidElementName";
+    private static final String INVALID_FIELD_TYPE = "invalidFieldType";
 
     private RawArrayElement rawArrayElement;
     private CustomFieldGroup mockedCustomFieldGroup;
