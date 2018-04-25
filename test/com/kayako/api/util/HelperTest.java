@@ -49,7 +49,7 @@ public class HelperTest {
     private static final String CHARSET_UTF_8 = "UTF-8";
     private final static String STR_INVALID_INT = "#123";
     private static final String STR_INVALID_DATE = "30/02/2018";
-    private final static long MAX_VALID_LONG = 9223372036854775807L;
+    private final static long MAX_VALID_LONG = 9_223_372_036_854_775_807L;
     private final static String STR_VALID_LONG = "9223372036854775807";
     private final static String STR_INVALID_LONG = "9223372036854775807L";
     private final static long currentTimestamp = System.currentTimeMillis();
@@ -134,7 +134,6 @@ public class HelperTest {
 
         replay(mockedFile, FileInputStream.class);
         Helper.readBytesFromFile(mockedFile);
-        verify(mockedFile, FileInputStream.class);
     }
 
     @Test
@@ -143,7 +142,6 @@ public class HelperTest {
         expect(mockedInputStream.read(anyObject(), anyInt(), anyInt())).andReturn(VALID_INT);
         replay(FileInputStream.class, mockedInputStream, mockedFile);
         collector.checkThat(Helper.readBytesFromFile(mockedFile).length, equalTo(VALID_INT));
-        verify(FileInputStream.class, mockedInputStream, mockedFile);
     }
 
     @Test
@@ -157,7 +155,6 @@ public class HelperTest {
 
         replay(FileInputStream.class, mockedInputStream, mockedFile);
         Helper.readBytesFromFile(mockedFile);
-        verify(FileInputStream.class, mockedInputStream, mockedFile);
     }
 
     @Test
@@ -165,7 +162,6 @@ public class HelperTest {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andThrow(new UnsupportedEncodingException());
         replay(InputStreamReader.class, mockedReader);
         String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
-        verify(InputStreamReader.class, mockedReader);
         collector.checkThat(slurpResult.length(), equalTo(INT_ZERO));
     }
 
@@ -174,7 +170,6 @@ public class HelperTest {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andThrow(new IOException());
         replay(InputStreamReader.class, mockedReader);
         String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
-        verify(InputStreamReader.class, mockedReader);
         collector.checkThat(slurpResult.length(), equalTo(INT_ZERO));
     }
 
@@ -183,7 +178,6 @@ public class HelperTest {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andReturn(VALID_INT).andReturn(INT_MINUS_ONE);
         replay(InputStreamReader.class, mockedReader);
         String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
-        verify(InputStreamReader.class, mockedReader);
         collector.checkThat(slurpResult.length(), equalTo(VALID_INT));
     }
 }

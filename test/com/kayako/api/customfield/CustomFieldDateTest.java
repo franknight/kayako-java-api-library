@@ -57,7 +57,7 @@ public class CustomFieldDateTest {
         attributes.put(TITLE_KEY, TITLE_VALUE);
         attributes.put(NAME_KEY, NAME_VALUE);
 
-        dateString = Helper.getDateString(System.currentTimeMillis() );
+        dateString = Helper.getDateString(System.currentTimeMillis());
         timestamp = new Timestamp(Helper.getTimeStampFromDateString(dateString));
     }
 
