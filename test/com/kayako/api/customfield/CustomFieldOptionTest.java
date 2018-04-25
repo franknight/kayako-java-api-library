@@ -3,12 +3,14 @@ package com.kayako.api.customfield;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
 import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
 import static org.powermock.api.easymock.PowerMock.replay;
 import static org.powermock.api.easymock.PowerMock.verify;
 
+import org.junit.rules.ExpectedException;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.junit.Rule;
@@ -41,11 +43,15 @@ public class CustomFieldOptionTest {
     private static final String CUSTOM_OBJECT_XML_NAME = "customObjectXmlName";
     private static final String CUSTOM_FIELD_OPTION_ID = "customfieldoptionid";
     private static final String PARENT_CUSTOM_FIELD_OPTION_ID = "parentcustomfieldoptionid";
+    private static final String METHOD_NOT_AVAILABLE_MSG = "method is not available";
 
     private CustomFieldOption customFieldOption;
     private RawArrayElement rawArrayElement4GetAll;
     private RawArrayElement rawArrayElement4Populate;
     private ArrayList<String> parameters;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -114,13 +120,17 @@ public class CustomFieldOptionTest {
         collector.checkThat(customFieldOption.getReadOnly(), equalTo(FALSE));
     }
 
-    @Test (expected = KayakoException.class)
+    @Test
     public void shouldGet() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         CustomFieldOption.get(INT_ID);
     }
 
-    @Test (expected = KayakoException.class)
+    @Test
     public void shouldRefresh() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customFieldOption.refresh();
     }
 

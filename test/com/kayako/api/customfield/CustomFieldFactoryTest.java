@@ -1,15 +1,17 @@
 package com.kayako.api.customfield;
 
-
 import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 import static org.powermock.api.easymock.PowerMock.verifyAll;
 import static org.powermock.api.easymock.PowerMock.createMockAndExpectNew;
+
+import org.junit.rules.ExpectedException;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.junit.Rule;
@@ -37,10 +39,13 @@ public class CustomFieldFactoryTest {
     private static final String STR_VALUE4NAME = "strValue4Name";
     private static final String STR_VALUE4TITLE= "strValue4Title";
     private static final String INVALID_ELEMENT_NAME = "invalidElementName";
-    private static final String INVALID_FIELD_TYPE = "invalidFieldType";
+    private static final String INVALID_XML_ELEMENT_MSG = "Invalid XML Element";
 
     private RawArrayElement rawArrayElement;
     private CustomFieldGroup mockedCustomFieldGroup;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -130,13 +135,19 @@ public class CustomFieldFactoryTest {
         collector.checkThat(customField.getTitle(), equalTo(STR_VALUE4TITLE));
     }
 
-    @Test (expected = KayakoException.class)
+    @Test
     public void givenNullElementWhenCreateCustomFieldThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(INVALID_XML_ELEMENT_MSG));
+
         CustomFieldFactory.createCustomField(mockedCustomFieldGroup, null);
     }
 
-    @Test (expected = KayakoException.class)
+    @Test
     public void givenElementWithInvalidElementNameWhenCreateCustomFieldThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(INVALID_XML_ELEMENT_MSG));
+
         rawArrayElement.setElementName(INVALID_ELEMENT_NAME);
         CustomFieldFactory.createCustomField(mockedCustomFieldGroup, rawArrayElement);
     }

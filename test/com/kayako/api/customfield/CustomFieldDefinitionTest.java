@@ -3,6 +3,7 @@ package com.kayako.api.customfield;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import com.kayako.api.util.Helper;
 import org.junit.rules.ErrorCollector;
@@ -12,6 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.kayako.api.enums.CustomFieldDefinitionTypeEnum;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -19,8 +21,12 @@ import java.util.ArrayList;
 import static java.lang.Boolean.TRUE;
 import static java.lang.Boolean.FALSE;
 import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.powermock.api.easymock.PowerMock.replay;
 import static org.powermock.api.easymock.PowerMock.verify;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
@@ -30,7 +36,9 @@ import static org.powermock.api.easymock.PowerMock.mockStatic;
 public class CustomFieldDefinitionTest {
 
     private static final int INT_ONE = 1;
+    private static final int INT_ZERO = 0;
     private static final String STR_INT_ONE = "1";
+    private static final String STR_INT_ZERO = "0";
     private static final String STR_VALUE = "STR_VALUE";
     private static final String CUSTOM_FIELD_ID = "customfieldid";
     private static final String CUSTOM_FIELD_GROUP_ID = "customfieldgroupid";
@@ -43,20 +51,30 @@ public class CustomFieldDefinitionTest {
     private static final String STAFF_EDITABLE = "staffeditable";
     private static final String REGEXP_VALIDATE = "regexpvalidate";
     private static final String DISPLAY_ORDER = "displayorder";
+    private static final String STR_CONTROLLER = "strController";
     private static final String ENCRYPTED = "encryptindb";
+    private static final String IS_SELECTED = "isselected";
     private static final String DESCRIPTION = "description";
+    private static final int INT_ID_NOT_EXIST_IN_OPTIONS = 0;
+    private static final String STR_VALUE_NOT_EXIST_IN_OPTIONS = "strValueNotInOptions";
+    private static final String METHOD_NOT_AVAILABLE_MSG = "method is not available";
 
     private CustomFieldDefinition customFieldDefinition;
     private RawArrayElement rawArrayElement;
     private CustomFieldOption customFieldOption;
-    private ArrayList<CustomFieldOption> options;
+    private List<CustomFieldOption> options;
+    private List<RawArrayElement> componentList;
+    private RawArrayElement component1;
     private Map<String, String> attributes;
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+
     @Before
-    public void setUp() throws KayakoException {
+    public void setUp() throws Exception {
 
         attributes = new HashMap<>();
         attributes.put(CUSTOM_FIELD_ID, STR_INT_ONE);
@@ -73,7 +91,14 @@ public class CustomFieldDefinitionTest {
         attributes.put(ENCRYPTED, STR_INT_ONE);
         attributes.put(DESCRIPTION, STR_VALUE);
 
+        component1 = new RawArrayElement(CustomFieldOption.getObjectXmlName(), new HashMap<>());
+        component1.setAttribute(IS_SELECTED, STR_INT_ZERO);
+        componentList = new ArrayList<>();
+        componentList.add(component1);
+
         rawArrayElement = new RawArrayElement(CustomFieldDefinition.getObjectXmlName(), attributes, null);
+        rawArrayElement.setComponents((ArrayList<RawArrayElement>) componentList);
+
         customFieldDefinition = new CustomFieldDefinition(rawArrayElement);
 
         options = new ArrayList<>();
@@ -81,33 +106,63 @@ public class CustomFieldDefinitionTest {
         customFieldOption.setId(INT_ONE);
         customFieldOption.setValue(STR_VALUE);
         options.add(customFieldOption);
-        customFieldDefinition.setOptions(options);
+        customFieldDefinition.setOptions((ArrayList<CustomFieldOption>) options);
     }
 
-    @Test(expected = KayakoException.class)
-    public void givenIdWhenGetThenKayakoException() throws KayakoException {
+    @Test
+    public void givenIdWhenGetThenKayakoException() throws Exception {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customFieldDefinition.get(INT_ONE);
     }
 
-    @Test(expected = KayakoException.class)
-    public void whenRefreshThenKayakoException() throws KayakoException {
+    @Test
+    public void whenRefreshThenKayakoException() throws Exception {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customFieldDefinition.refresh();
     }
 
     @Test
-    public void givenIdWhenGetOptionByIdThenCustomFieldOption() throws KayakoException {
+    public void givenIdWhenGetOptionByIdThenCustomFieldOption() throws Exception {
         collector.checkThat(customFieldDefinition.getOptionById(INT_ONE), sameInstance(customFieldOption));
     }
 
     @Test
-    public void givenValueWhenGetOptionByValueThenCustomFieldOption() throws KayakoException {
+    public void givenIdNotExistInOptionsWhenGetOptionByIdThenNull() throws Exception {
+        collector.checkThat(customFieldDefinition.getOptionById(INT_ID_NOT_EXIST_IN_OPTIONS), is(nullValue()));
+    }
+
+    @Test
+    public void givenValueWhenGetOptionByValueThenCustomFieldOption() throws Exception {
         collector.checkThat(customFieldDefinition.getOptionByValue(STR_VALUE), sameInstance(customFieldOption));
+    }
+
+    @Test
+    public void givenValueNotExistInOptionsWhenGetOptionByValueThenNull() throws Exception {
+        collector.checkThat(customFieldDefinition.getOptionByValue(STR_VALUE_NOT_EXIST_IN_OPTIONS), is(nullValue()));
     }
 
     @Test
     public void shouldSetReadOnly() {
         customFieldDefinition.setReadOnly(TRUE);
         collector.checkThat(customFieldDefinition.getReadOnly(), equalTo(TRUE));
+    }
+
+    @Test
+    public void shouldSetController() {
+
+        CustomFieldDefinition.setController(STR_CONTROLLER);
+        collector.checkThat(CustomFieldDefinition.getController(), equalTo(STR_CONTROLLER));
+    }
+
+    @Test
+    public void shouldSetDefinitions() throws Exception {
+        ArrayList<CustomFieldDefinition> definitionList = new ArrayList<>();
+        definitionList.add(new CustomFieldDefinition(rawArrayElement));
+        CustomFieldDefinition.setDefinitions(definitionList);
+        collector.checkThat(CustomFieldDefinition.getDefinitions(), is(notNullValue()));
+        collector.checkThat(CustomFieldDefinition.getDefinitions().size(), equalTo(INT_ONE));
     }
 
     @Test
@@ -128,7 +183,7 @@ public class CustomFieldDefinitionTest {
     }
 
     @Test
-    public void shouldAddCustomFieldOption() throws KayakoException {
+    public void shouldAddCustomFieldOption() throws Exception {
         CustomFieldOption customFieldOpt = new CustomFieldOption();
         customFieldDefinition.addOption(customFieldOpt);
         final int IDX_OF_LAST = customFieldDefinition.getOptions().size()-INT_ONE;
@@ -136,16 +191,47 @@ public class CustomFieldDefinitionTest {
     }
 
     @Test
-    public void givenFalseWhenGetDefaultOptionsThenCustomFieldOptionList() throws KayakoException {
+    public void givenFalseWhenGetDefaultOptionsThenCustomFieldOptionList() throws Exception {
         collector.checkThat(customFieldDefinition.getDefaultOptions(FALSE), sameInstance(customFieldDefinition.getOptions()));
     }
 
     @Test
-    public void givenTrueWhenGetDefaultOptionsThenCustomFieldOptionList() throws KayakoException {
+    public void givenTrueWhenGetDefaultOptionsThenCustomFieldOptionList() throws Exception {
+        final int sizeOfOptions = customFieldDefinition.getOptions().size();
+
         mockStatic(CustomFieldOption.class);
-        expect(CustomFieldOption.getAll(INT_ONE)).andReturn(rawArrayElement);
+        expect(CustomFieldOption.getAll(customFieldDefinition.getId())).andReturn(rawArrayElement);
+
         replay(CustomFieldOption.class);
-        collector.checkThat(customFieldDefinition.getDefaultOptions(TRUE), sameInstance(customFieldDefinition.getOptions()));
+        collector.checkThat(customFieldDefinition.getDefaultOptions(TRUE).size() > sizeOfOptions, equalTo(TRUE));
         verify(CustomFieldOption.class);
+    }
+
+    @Test
+    public void givenDateFieldWhenGetDefaultOptionThenEmptyOptions() throws Exception {
+        customFieldDefinition.setOptions((ArrayList<CustomFieldOption>) options);
+        customFieldDefinition.setType(CustomFieldDefinitionTypeEnum.DATE);
+
+        collector.checkThat(customFieldDefinition.getDefaultOptions(TRUE).size(), equalTo(INT_ZERO));
+    }
+
+    @Test
+    public void givenTrueWhenGetOptionsThenCustomFieldOptionList() throws Exception {
+        final int sizeOfOptions = customFieldDefinition.getOptions().size();
+
+        mockStatic(CustomFieldOption.class);
+        expect(CustomFieldOption.getAll(customFieldDefinition.getId())).andReturn(rawArrayElement);
+
+        replay(CustomFieldOption.class);
+        collector.checkThat(customFieldDefinition.getOptions(TRUE).size() > sizeOfOptions, equalTo(TRUE));
+        verify(CustomFieldOption.class);
+    }
+
+    @Test
+    public void givenDateFieldWhenGetOptionThenEmptyOptions() throws Exception {
+        customFieldDefinition.setOptions((ArrayList<CustomFieldOption>) options);
+        customFieldDefinition.setType(CustomFieldDefinitionTypeEnum.DATE);
+
+        collector.checkThat(customFieldDefinition.getOptions(TRUE).size(), equalTo(INT_ZERO));
     }
 }
