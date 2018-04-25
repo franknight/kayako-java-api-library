@@ -4,6 +4,7 @@ import static com.kayako.tests.Test.API_KEY;
 import static com.kayako.tests.Test.API_URL;
 import static com.kayako.tests.Test.SECRET_KEY;
 import static org.easymock.EasyMock.mock;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import org.junit.Rule;
@@ -19,6 +20,7 @@ import com.kayako.api.util.Helper;
 import com.kayako.api.rest.RawArrayElement;
 import com.kayako.api.exception.KayakoException;
 import com.kayako.api.configuration.Configuration;
+import org.junit.rules.ExpectedException;
 
 public class CustomFieldDateTest {
     private static final String CONTROLLER = "CONTROLLER";
@@ -27,8 +29,10 @@ public class CustomFieldDateTest {
     private static final String TITLE_VALUE = "TITLE";
     private static final String NAME_VALUE = "NAME_VALUE";
     private static final String INVALID_DATE_STR = "111,222";
+    private static final String DATE_FORMAT= "yyyy-MM-dd";
     private static final int INT_ID = 1;
     private static final String ELEMENT_NAME = "ELEMENT_NAME"; // apart from value of objectXmlName in Custom Field
+    private static final String METHOD_NOT_AVAILABLE_MSG = "method is not available";
 
     private String dateString;
     private static Timestamp timestamp;
@@ -38,29 +42,36 @@ public class CustomFieldDateTest {
     private CustomFieldGroup customFieldGroupMock;
 
     @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+
+    @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
     @Before
-    public void setUp() throws ParseException {
+    public void setUp() throws Exception {
         customFieldGroupMock = mock(CustomFieldGroup.class);
         customFieldDate = new CustomFieldDate(customFieldGroupMock);
         Configuration.init(API_URL, API_KEY, SECRET_KEY);
-
+        Configuration.getConfiguration().setDateFormat(DATE_FORMAT);
         attributes = new HashMap<>();
         attributes.put(TITLE_KEY, TITLE_VALUE);
         attributes.put(NAME_KEY, NAME_VALUE);
 
-        dateString = Helper.getDateString(System.currentTimeMillis());
+        dateString = Helper.getDateString(System.currentTimeMillis() );
         timestamp = new Timestamp(Helper.getTimeStampFromDateString(dateString));
     }
 
-    @Test(expected = KayakoException.class)
-    public void givenIdWhenGetThenKayakoException() throws KayakoException {
+    @Test
+    public void givenIdWhenGetThenKayakoException() throws Exception {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customFieldDate.get(INT_ID);
     }
 
-    @Test(expected = KayakoException.class)
-    public void givenControllerWhenRefreshThenKayakoException() throws KayakoException {
+    @Test
+    public void givenControllerWhenRefreshThenKayakoException() throws Exception {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customFieldDate.refresh(CONTROLLER);
     }
 
@@ -71,30 +82,30 @@ public class CustomFieldDateTest {
     }
 
     @Test
-    public void givenDateStringWhenSetValueThenCustomFieldDate() throws KayakoException {
+    public void givenDateStringWhenSetValueThenCustomFieldDate() throws Exception {
         collector.checkThat(customFieldDate.setValue(dateString), sameInstance(customFieldDate));
         collector.checkThat(customFieldDate.getValue(), equalTo(dateString));
     }
 
     @Test(expected = KayakoException.class)
-    public void givenImproperDateStrWhenSetValueThenParseException() throws KayakoException {
+    public void givenImproperDateStrWhenSetValueThenParseException() throws Exception {
         customFieldDate.setValue(INVALID_DATE_STR);
     }
 
     @Test
-    public void givenDateStrWhenSetDateThenCustomFieldDate() throws ParseException {
+    public void givenDateStrWhenSetDateThenCustomFieldDate() throws Exception {
         collector.checkThat(customFieldDate.setDate(dateString), sameInstance(customFieldDate));
         collector.checkThat(customFieldDate.getDate(), equalTo(dateString));
     }
 
     @Test (expected = KayakoException.class)
-    public void givenRawArrayElementWhenPopulateThenKayakoExpection() throws KayakoException {
+    public void givenRawArrayElementWhenPopulateThenKayakoExpection() throws Exception {
         rawArrayElement = new RawArrayElement(ELEMENT_NAME);
         customFieldDate.populate(rawArrayElement);
     }
 
     @Test
-    public void givenRawArrayElementWhenPopulateThenCustomFieldDate() throws KayakoException {
+    public void givenRawArrayElementWhenPopulateThenCustomFieldDate() throws Exception {
         rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, dateString);
         customFieldDate.populate(rawArrayElement);
         collector.checkThat(customFieldDate.getTitle(), equalTo(TITLE_VALUE));
@@ -103,7 +114,7 @@ public class CustomFieldDateTest {
     }
 
     @Test
-    public void givenRawArrayElementWithImproperDateStrWhenPopulateThenCustomFieldDate() throws KayakoException {
+    public void givenRawArrayElementWithImproperDateStrWhenPopulateThenCustomFieldDate() throws Exception {
         rawArrayElement = new RawArrayElement(CustomField.getObjectXmlName(), attributes, INVALID_DATE_STR);
         collector.checkThat(customFieldDate.populate(rawArrayElement), sameInstance(customFieldDate));
     }

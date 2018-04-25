@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.powermock.api.easymock.PowerMock.replay;
 import static org.powermock.api.easymock.PowerMock.verify;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
@@ -17,10 +18,12 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.rules.ErrorCollector;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
+
 import org.junit.runner.RunWith;
+import org.junit.rules.ExpectedException;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
@@ -32,10 +35,6 @@ import com.kayako.api.enums.CustomFieldDefinitionTypeEnum;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(KEntity.class)
 public class CustomFieldTest {
-    private CustomField customField;
-    private CustomFieldGroup customFieldGroupMock;
-    private CustomFieldDefinition customFieldDefinitionMock;
-    private RawArrayElement rawArrayElement;
 
     private static final int INT_ID = 1;
     private static final int INT_TYPE = 10;
@@ -51,7 +50,16 @@ public class CustomFieldTest {
     private static final String OBJECT_XML_NAME = "objectXmlName";
     private static final String OBJECT_TO_STRING = "CustomField- ID: " + INT_ID;
     private static final CustomFieldOption CUSTOM_FIELD_OPTION = new CustomFieldOption();
+    private static final String METHOD_NOT_AVAILABLE_MSG = "method is not available";
+
+    private CustomField customField;
+    private CustomFieldGroup customFieldGroupMock;
+    private CustomFieldDefinition customFieldDefinitionMock;
+    private RawArrayElement rawArrayElement;
     private Map<String, String> attributes;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -70,28 +78,38 @@ public class CustomFieldTest {
         attributes.put(NAME_KEY, NAME_VALUE);
     }
 
-    @Test(expected = KayakoException.class)
+    @Test
     public void givenIdWhenGetThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customField.get(INT_ID);
     }
 
-    @Test(expected = KayakoException.class)
+    @Test
     public void givenControllerWhenCreateThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customField.create(CONTROLLER);
     }
 
-    @Test(expected = KayakoException.class)
+    @Test
     public void givenControllerWhenDeleteThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customField.delete(CONTROLLER);
     }
 
-    @Test(expected = KayakoException.class)
+    @Test
     public void givenControllerWhenRefreshThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customField.refresh(CONTROLLER);
     }
 
-    @Test(expected = KayakoException.class)
+    @Test
     public void givenControllerWhenUpdateThenKayakoException() throws KayakoException {
+        thrown.expect(KayakoException.class);
+        thrown.expectMessage(containsString(METHOD_NOT_AVAILABLE_MSG));
         customField.update(CONTROLLER);
     }
 

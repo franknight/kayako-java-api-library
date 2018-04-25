@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.anyInt;
 import static org.easymock.EasyMock.anyObject;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.powermock.api.easymock.PowerMock.replay;
 import static org.powermock.api.easymock.PowerMock.verify;
@@ -12,6 +13,8 @@ import static org.powermock.api.easymock.PowerMock.createMockAndExpectNew;
 import static com.kayako.tests.Test.API_URL;
 import static com.kayako.tests.Test.API_KEY;
 import static com.kayako.tests.Test.SECRET_KEY;
+
+import org.junit.rules.ExpectedException;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.junit.Before;
@@ -50,6 +53,8 @@ public class HelperTest {
     private final static String STR_VALID_LONG = "9223372036854775807";
     private final static String STR_INVALID_LONG = "9223372036854775807L";
     private final static long currentTimestamp = System.currentTimeMillis();
+    private static final String FILE_TOO_LONG_MSG = "it is too long";
+    private static final String NOT_COMPLETELY_READ_FILE_MSG = "Could not completely read file " + FILE_NAME;
 
     private Date currentDate;
     private Format formatter;
@@ -58,6 +63,9 @@ public class HelperTest {
     private File mockedFile;
     private Reader mockedReader;
     private InputStream mockedInputStream;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
@@ -116,10 +124,14 @@ public class HelperTest {
         Helper.getTimeStampFromDateString(STR_INVALID_DATE);
     }
 
-    @Test(expected = IOException.class)
+    @Test
     public void givenHugeFileWhenReadBytesFromFileThenIOException() throws IOException {
         expect(mockedFile.getName()).andReturn(FILE_NAME);
         expect(mockedFile.length()).andReturn(MAX_VALID_LONG);
+
+        thrown.expect(IOException.class);
+        thrown.expectMessage(containsString(FILE_TOO_LONG_MSG));
+
         replay(mockedFile, FileInputStream.class);
         Helper.readBytesFromFile(mockedFile);
         verify(mockedFile, FileInputStream.class);
@@ -134,11 +146,15 @@ public class HelperTest {
         verify(FileInputStream.class, mockedInputStream, mockedFile);
     }
 
-    @Test (expected = IOException.class)
+    @Test
     public void givenFileWhenReadBytesFromFileThenIOException() throws Exception {
         expect(mockedFile.getName()).andReturn(FILE_NAME);
         expect(mockedFile.length()).andReturn((long)VALID_INT);
         expect(mockedInputStream.read(anyObject(), anyInt(), anyInt())).andReturn(INT_MINUS_ONE);
+
+        thrown.expect(IOException.class);
+        thrown.expectMessage(equalTo(NOT_COMPLETELY_READ_FILE_MSG));
+
         replay(FileInputStream.class, mockedInputStream, mockedFile);
         Helper.readBytesFromFile(mockedFile);
         verify(FileInputStream.class, mockedInputStream, mockedFile);
@@ -147,24 +163,27 @@ public class HelperTest {
     @Test
     public void givenInputStreamWhenSlurpThenUnsupportedEncodingException() throws IOException {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andThrow(new UnsupportedEncodingException());
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
-        Helper.slurp(mockedInputStream, VALID_INT);
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
+        replay(InputStreamReader.class, mockedReader);
+        String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
+        verify(InputStreamReader.class, mockedReader);
+        collector.checkThat(slurpResult.length(), equalTo(INT_ZERO));
     }
 
     @Test
     public void givenInputStreamWhenSlurpThenIOException() throws IOException {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andThrow(new IOException());
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
-        Helper.slurp(mockedInputStream, VALID_INT);
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
+        replay(InputStreamReader.class, mockedReader);
+        String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
+        verify(InputStreamReader.class, mockedReader);
+        collector.checkThat(slurpResult.length(), equalTo(INT_ZERO));
     }
 
     @Test
     public void givenInputStreamWhenSlurpThenString() throws IOException {
         expect(mockedReader.read(anyObject(), anyInt(), anyInt())).andReturn(VALID_INT).andReturn(INT_MINUS_ONE);
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
-        Helper.slurp(mockedInputStream, VALID_INT);
-        replay(InputStreamReader.class, mockedInputStream, mockedReader);
+        replay(InputStreamReader.class, mockedReader);
+        String slurpResult = Helper.slurp(mockedInputStream, VALID_INT);
+        verify(InputStreamReader.class, mockedReader);
+        collector.checkThat(slurpResult.length(), equalTo(VALID_INT));
     }
 }

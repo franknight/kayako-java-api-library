@@ -99,7 +99,7 @@ public class CustomFieldFileTest {
     }
 
     @Test (expected = NullPointerException.class)
-    public void givenImproperFileWhenSetContentFromFileThenTrowIOException() throws IOException {
+    public void givenImproperFileWhenSetContentFromFileThenTrowIOException() {
         File file = new File(FILE_PATH);
         customFieldFile.setFileName(FILE_NAME);
         // to prevent print stack trace of the exception into standard error output stack trace
