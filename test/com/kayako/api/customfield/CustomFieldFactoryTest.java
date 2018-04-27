@@ -5,8 +5,6 @@ import static org.easymock.EasyMock.mock;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.powermock.api.easymock.PowerMock.createMockAndExpectNew;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 import static org.powermock.api.easymock.PowerMock.verifyAll;
@@ -61,7 +59,7 @@ public class CustomFieldFactoryTest {
 	}
 
 	@Test
-	public void shouldCreateCustomFieldFile() throws KayakoException {
+	public void shouldCreateCustomFieldFile() throws Exception {
 		// Arrange
 		rawArrayElement.setAttribute(TYPE, CustomFieldDefinitionTypeEnum.FILE.getString());
 		rawArrayElement.setAttribute(FILE_NAME, STR_VALUE);
@@ -89,7 +87,6 @@ public class CustomFieldFactoryTest {
 		
 		// Assert
 		collector.checkThat(customField, instanceOf(CustomFieldLinkedSelect.class));
-		collector.checkThat(customField, is(notNullValue()));
 	}
 
 	@Test
@@ -97,7 +94,8 @@ public class CustomFieldFactoryTest {
 	public void shouldCreateCustomFieldMultiSelect() throws Exception {
 		// Arrange
 		rawArrayElement.setAttribute(TYPE, CustomFieldDefinitionTypeEnum.MULTI_SELECT.getString());
-		CustomFieldMultiSelect mockedCustomFieldMultiSelect = createMockAndExpectNew(CustomFieldMultiSelect.class, customFieldGroupMocked);
+		CustomFieldMultiSelect mockedCustomFieldMultiSelect = 
+				createMockAndExpectNew(CustomFieldMultiSelect.class, customFieldGroupMocked);
 		expect(mockedCustomFieldMultiSelect.populate(rawArrayElement)).andReturn(mockedCustomFieldMultiSelect);
 
 		// Act
@@ -107,7 +105,6 @@ public class CustomFieldFactoryTest {
 
 		// Assert
 		collector.checkThat(customField, instanceOf(CustomFieldMultiSelect.class));
-		collector.checkThat(customField, is(notNullValue()));
 	}
 
 	@Test
@@ -125,11 +122,10 @@ public class CustomFieldFactoryTest {
 
 		// Assert
 		collector.checkThat(customField, instanceOf(CustomFieldSelect.class));
-		collector.checkThat(customField, is(notNullValue()));
 	}
 
 	@Test
-	public void shouldCreateCustomFieldDate() throws KayakoException {
+	public void shouldCreateCustomFieldDate() throws Exception {
 		// Arrange
 		rawArrayElement.setAttribute(TYPE, CustomFieldDefinitionTypeEnum.DATE.getString());
 		rawArrayElement.setElementName(CustomFieldDate.getObjectXmlName());
@@ -139,11 +135,10 @@ public class CustomFieldFactoryTest {
 
 		// Assert
 		collector.checkThat(customField, instanceOf(CustomFieldDate.class));
-		collector.checkThat(customField, is(notNullValue()));
 	}
 
 	@Test
-	public void shouldCreateCustomField() throws KayakoException {
+	public void shouldCreateCustomField() throws Exception {
 		// Arrange
 		rawArrayElement.setAttribute(TYPE, CustomFieldDefinitionTypeEnum.TEXT.getString());
 		rawArrayElement.setAttribute(TITLE_KEY, STR_VALUE4TITLE);
@@ -154,13 +149,12 @@ public class CustomFieldFactoryTest {
 		CustomField customField = CustomFieldFactory.createCustomField(customFieldGroupMocked, rawArrayElement);
 
 		// Assert
-		collector.checkThat(customField, is(notNullValue()));
 		collector.checkThat(customField.getName(), equalTo(STR_VALUE4NAME));
 		collector.checkThat(customField.getTitle(), equalTo(STR_VALUE4TITLE));
 	}
 
 	@Test
-	public void givenNullElementWhenCreateCustomFieldThenKayakoException() throws KayakoException {
+	public void givenNullElementWhenCreateCustomFieldThenKayakoException() throws Exception {
 		thrown.expect(KayakoException.class);
 		thrown.expectMessage(containsString(INVALID_XML_ELEMENT_MSG));
 
@@ -168,7 +162,7 @@ public class CustomFieldFactoryTest {
 	}
 
 	@Test
-	public void givenElementWithInvalidElementNameWhenCreateCustomFieldThenKayakoException() throws KayakoException {
+	public void givenElementWithInvalidElementNameWhenCreateCustomFieldThenKayakoException() throws Exception {
 		thrown.expect(KayakoException.class);
 		thrown.expectMessage(containsString(INVALID_XML_ELEMENT_MSG));
 
